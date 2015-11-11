@@ -46,7 +46,7 @@ Arena SVG::getArena(double _velTiro, double _velHelicoptero, double _tempoDeVoo,
     arena.postoAbastecimento = postoAbastecimento;
     arena.objetosResgate = objetosResgate;
 
-    areaJogador.posicao.z = 10;
+    areaJogador.posicao.z = ALTURA_HELICOPTERO / 2.0;
     arena.jogador.area = areaJogador;
     arena.jogador.id = areaJogador.id;
     arena.jogador.velocidadeHelicoptero = _velHelicoptero;
@@ -56,7 +56,7 @@ Arena SVG::getArena(double _velTiro, double _velHelicoptero, double _tempoDeVoo,
 
     for (Circle areaInimigo : areaInimigos) {
         Helicoptero inimigo;
-        areaInimigo.posicao.z = 5;
+        areaInimigo.posicao.z = ALTURA_HELICOPTERO / 2.0;
         inimigo.area = areaInimigo;
         inimigo.id = areaInimigo.id;
         inimigo.velocidadeHelicoptero = _velInimigo;

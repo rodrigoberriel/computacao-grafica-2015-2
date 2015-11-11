@@ -16,6 +16,8 @@
  * Azul:            79, 129, 189
  */
 
+ #define ALTURA_HELICOPTERO 20
+
 class Helicoptero
 {
     public:
@@ -47,7 +49,7 @@ class Helicoptero
         void desenharHelice(); // OK
         void desenharCorpo(); // OK
         void desenharCanhao(); // OK
-        void Draw(); // OK
+        void Draw(int flag = DRAW_2D); // OK
         void Draw3D(); // TESTE
         Circle area;
         std::string id;
@@ -65,6 +67,7 @@ class Helicoptero
         float anguloCanhao, anguloHelice;
         float velocidadeHelice;
         bool voando;
+        bool draw3d = false;
 };
 
 #endif // HELICOPTERO_H

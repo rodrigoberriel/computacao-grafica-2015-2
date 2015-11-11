@@ -16,8 +16,8 @@ void Arena::Draw()
     postoAbastecimento.Draw();
     for (Circle c : objetosResgate) c.Draw();
     for (Tiro t : tiros) t.Draw();
-    for (Helicoptero h : inimigos) h.Draw();
-    jogador.Draw();
+    for (Helicoptero h : inimigos) h.Draw(DRAW_3D);
+    jogador.Draw(DRAW_3D);
     jogador.desenharCombustivel(10, mapa.altura - 10, NUMERO_DE_MARCADORES_COMBUSTIVEL);
     jogador.desenharResgates(mapa.largura - 10, mapa.altura - 10, nObjetos);
 
