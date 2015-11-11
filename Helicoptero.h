@@ -48,6 +48,7 @@ class Helicoptero
         void desenharCorpo(); // OK
         void desenharCanhao(); // OK
         void Draw(); // OK
+        void Draw3D(); // TESTE
         Circle area;
         std::string id;
         float velocidadeHelicoptero, velocidadeTiro;
@@ -57,6 +58,7 @@ class Helicoptero
         Cor corCorpo;
 
         Ponto getPosicao() { return area.posicao; };
+        Ponto getDirecao();
         Ponto getProximaPosicao(GLdouble timeDiff);
     protected:
     private:

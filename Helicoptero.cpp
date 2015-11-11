@@ -18,7 +18,7 @@ void Helicoptero::Draw()
     glPushMatrix();
 
         // move ele para a posição do circulo do jogador
-        glTranslatef(this->area.posicao.x, this->area.posicao.y, 0);
+        glTranslatef(this->area.posicao.x, this->area.posicao.y, this->area.posicao.z);
 
         // redimensiona ele para caber dentro do circulo
         glScalef(this->area.raio*2 / 85.0, this->area.raio*2 / 85.0, 0);
@@ -30,6 +30,25 @@ void Helicoptero::Draw()
         desenharCanhao();
         desenharCorpo();
         desenharHelice();
+
+    glPopMatrix();
+}
+
+void Helicoptero::Draw3D()
+{
+    glPushMatrix();
+
+        // move ele para a posição do circulo do jogador
+        glTranslatef(this->area.posicao.x, this->area.posicao.y, 30);
+
+        //glBegin(GL_POLYGON);
+        /*
+            GLUquadricObj *obj = gluNewQuadric();
+            gluSphere(obj, 30, 30, 30);
+            glTranslatef(this->area.posicao.x, this->area.posicao.y, 100);
+            gluCylinder(obj, 50.0, 50, 100, 30, 30);
+        */
+        //glEnd();
 
     glPopMatrix();
 }
@@ -217,4 +236,9 @@ void Helicoptero::moverCanhao(int incremento)
     anguloCanhao += incremento;
     if (anguloCanhao < -45) anguloCanhao = -45;
     if (anguloCanhao > 45) anguloCanhao = 45;
+}
+
+Ponto Helicoptero::getDirecao()
+{
+    return Ponto(cos((angulo) * M_PI / 180.0), sin((angulo) * M_PI / 180.0));
 }

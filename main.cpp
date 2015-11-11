@@ -23,6 +23,15 @@ bool isDrawn = false;
 bool keystates[256];
 int mouseUltimoX;
 
+//Camera controls
+double camDistanciaHelicoptero = 100;
+double camYaw = 90;
+double camPitch = 135;
+int toggleCam = 0;
+int lastX = 0;
+int lastY = 0;
+int buttonDown=0;
+
 void init();
 void display(void);
 void reshape(int w, int h);
@@ -30,6 +39,7 @@ void keyboard(unsigned char c, int x, int y);
 void keyup(unsigned char key, int x, int y);
 void mouse(int button, int state, int x, int y);
 void mouseMotion(int x, int y);
+void mouseClickMotion(int x, int y);
 void idle();
 void help();
 void sair(string mensagem = "");
@@ -83,6 +93,7 @@ int main(int argc, char** argv)
     glutMouseFunc(mouse);
     glutIdleFunc(idle);
     glutPassiveMotionFunc(mouseMotion);
+    glutMotionFunc(mouseClickMotion);
     glutReshapeFunc(reshape);
 
     // glut main loop
@@ -98,18 +109,37 @@ void init()
     glShadeModel(GL_SMOOTH);
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
-
-    /*glClearColor(0.0, 0.0, 0.0, 1.0);
-	glOrtho(0.0, arena.mapa.largura, arena.mapa.altura, 0.0, -1, 1);
-	glMatrixMode(GL_MODELVIEW);*/
 }
 
 void display(void)
 {
-    glClearColor (1.0,1.0,1.0,0.0);
+    glClearColor (0.0,0.0,0.0,1.0);
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear all pixels both buffers
     glLoadIdentity();
-    gluLookAt(0,0,100, 250,250,0, 0,0,1); // posiciona a camera
+
+    glScalef(1, -1, 1); // meu Y é invertido, por causa do 2D que usei como base
+
+    if (toggleCam == 0) {
+
+        // inicial
+        Ponto posicaoCamera;
+        posicaoCamera.x = arena.jogador.area.posicao.x;
+        posicaoCamera.y = arena.jogador.area.posicao.y;
+        posicaoCamera.z = arena.jogador.area.posicao.z;
+
+        // desloca a camera em uma 'esfera virtual'
+        Ponto direcaoCamera;
+        direcaoCamera.x = sin(camYaw * M_PI / 180.0) * sin(camPitch * M_PI / 180.0);
+        direcaoCamera.y = cos(camYaw * M_PI / 180.0) * sin(camPitch * M_PI / 180.0);
+        direcaoCamera.z = cos(camPitch * M_PI / 180.0);
+
+        posicaoCamera.x += camDistanciaHelicoptero * -direcaoCamera.x;
+        posicaoCamera.y += camDistanciaHelicoptero * -direcaoCamera.y;
+        posicaoCamera.z += camDistanciaHelicoptero * -direcaoCamera.z;
+
+        // posiciona a camera olhando para o jogador
+        gluLookAt(posicaoCamera.x,posicaoCamera.y,posicaoCamera.z, arena.jogador.area.posicao.x,arena.jogador.area.posicao.y,arena.jogador.area.posicao.z, 0,0,-1); // posiciona a camera
+    }
 
     GLfloat light_position[] = { 0.0, 0.0, 0.0, 1.0 };
     glLightfv(GL_LIGHT0, GL_POSITION, light_position);
@@ -118,8 +148,8 @@ void display(void)
 
     // desabilita a textura e a luz para testar
     glPushAttrib(GL_ENABLE_BIT);
-        glDisable(GL_LIGHTING);
-        glDisable(GL_TEXTURE_2D);
+        // glDisable(GL_LIGHTING);
+        // glDisable(GL_TEXTURE_2D);
         arena.Draw();
     glPopAttrib();
 
@@ -133,7 +163,7 @@ void reshape(int w, int h) {
     // configura a camera
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective (60, (float)w/(float)h, 1, 2000);
+    gluPerspective (60, (float)w/(float)h, 1, 3000);
 
     // posiciona a camera
     glMatrixMode(GL_MODELVIEW);
@@ -327,16 +357,6 @@ void mouse(int button, int state, int x, int y)
 
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
     {
-        // mostra a posição do clique
-        // cout << "Mouse: left-click (" << x << ", " << y << ")" << endl;
-
-        // varivel que vai guardar as componentes RGB da cor do pixel
-        // GLubyte pixelColorData[3];
-        // glReadPixels(x, arena.mapa.altura - y - 1, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, pixelColorData);
-        // Cor corPixel = Cor((int)pixelColorData[0], (int)pixelColorData[1], (int)pixelColorData[2]);
-        // mostra o ID do elemento clicado com base na cor
-        // arena.ImprimeElemento(corPixel);
-
         // atira
         if (arena.jogador.estaVoando()) {
             arena.tiros.push_back(arena.jogador.atirar());
@@ -358,6 +378,16 @@ void mouse(int button, int state, int x, int y)
             cout << "O jogador está voando!" << endl;
         }
     }
+
+    // código do Thiago
+    if (button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN) {
+        lastX = x;
+        lastY = y;
+        buttonDown = 1;
+    }
+    if (button == GLUT_RIGHT_BUTTON && state == GLUT_UP) {
+        buttonDown = 0;
+    }
 }
 
 void mouseMotion(int x, int y)
@@ -369,11 +399,61 @@ void mouseMotion(int x, int y)
     mouseUltimoX = x;
 }
 
+void mouseClickMotion(int x, int y)
+{
+    if (arena.statusPartida != EM_ANDAMENTO) return;
+
+    // código do Thiago
+    if (!buttonDown) return;
+
+    camYaw += x - lastX;
+    camPitch += y - lastY;
+
+    camPitch = (int)camPitch % 360;
+    if (camPitch > 179) camPitch = 179;
+    if (camPitch < 1) camPitch = 1;
+    camYaw = (int)camYaw % 360;
+
+    lastX = x;
+    lastY = y;
+}
+
 void keyup(unsigned char key, int x, int y) { keystates[key] = false; }
 void keyboard(unsigned char key, int x, int y)
 {
     keystates[key] = true;
     if (key == 27) sair("Keyboard: ESC");
+
+    static bool textureEnabled = true;
+    static bool lightingEnabled = true;
+    static bool smoothEnabled = true;
+
+    switch (key) {
+        case '0':
+            toggleCam = 0; // câmera que segue o helicóptero
+            break;
+        case '1':
+            toggleCam = 1;
+            break;
+        case '2':
+            toggleCam = 2;
+            break;
+        case 't':
+            if (textureEnabled)    glDisable(GL_TEXTURE_2D);
+            else                    glEnable(GL_TEXTURE_2D);
+            textureEnabled = !textureEnabled;
+            break;
+        case 'l':
+            if (lightingEnabled)   glDisable(GL_LIGHTING);
+            else                    glEnable(GL_LIGHTING);
+            lightingEnabled = !lightingEnabled;
+            break;
+        case 's':
+            if (smoothEnabled)      glShadeModel(GL_FLAT);
+            else                    glShadeModel(GL_SMOOTH);
+            smoothEnabled = !smoothEnabled;
+            break;
+    }
 }
 
 void help()
