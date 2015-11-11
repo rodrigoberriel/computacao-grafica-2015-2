@@ -353,7 +353,7 @@ void idle()
 
 void mouse(int button, int state, int x, int y)
 {
-    if (arena.statusPartida != EM_ANDAMENTO) return;
+    if (arena.statusPartida != EM_ANDAMENTO && arena.statusPartida != PAUSADO) return;
 
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
     {
@@ -392,7 +392,7 @@ void mouse(int button, int state, int x, int y)
 
 void mouseMotion(int x, int y)
 {
-    if (arena.statusPartida != EM_ANDAMENTO) return;
+    if (arena.statusPartida != EM_ANDAMENTO && arena.statusPartida != PAUSADO) return;
 
     if (x != mouseUltimoX) arena.jogador.moverCanhao((x - mouseUltimoX)/2);
     // atualiza o valor do ultimo x
@@ -401,7 +401,7 @@ void mouseMotion(int x, int y)
 
 void mouseClickMotion(int x, int y)
 {
-    if (arena.statusPartida != EM_ANDAMENTO) return;
+    if (arena.statusPartida != EM_ANDAMENTO && arena.statusPartida != PAUSADO) return;
 
     // código do Thiago
     if (!buttonDown) return;
@@ -452,6 +452,10 @@ void keyboard(unsigned char key, int x, int y)
             if (smoothEnabled)      glShadeModel(GL_FLAT);
             else                    glShadeModel(GL_SMOOTH);
             smoothEnabled = !smoothEnabled;
+            break;
+        case 'p':
+            if (arena.statusPartida == PAUSADO) arena.statusPartida = EM_ANDAMENTO;
+            else arena.statusPartida = PAUSADO;
             break;
     }
 }

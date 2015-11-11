@@ -12,7 +12,8 @@
 enum {
     EM_ANDAMENTO,
     GANHOU,
-    PERDEU
+    PERDEU,
+    PAUSADO
 };
 
 enum {

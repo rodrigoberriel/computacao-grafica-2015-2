@@ -26,7 +26,13 @@ void Arena::Draw()
 
 void Arena::mostrarMensagem()
 {
-    const char * mensagem = (statusPartida == GANHOU) ? "GANHOU!" : "PERDEU!";
+    const char * mensagem;
+    switch(statusPartida) {
+        case GANHOU: mensagem = "GANHOU!"; break;
+        case PERDEU: mensagem = "PERDEU!"; break;
+        case PAUSADO: mensagem = "PAUSADO!"; break;
+    }
+
     Cor _cor = (statusPartida == GANHOU) ? Cor("blue") : Cor("darkred");
 
     glPushMatrix();
