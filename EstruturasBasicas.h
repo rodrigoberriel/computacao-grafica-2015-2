@@ -6,6 +6,7 @@
 #include <cstring>
 #include <math.h>
 #include <GL/glut.h>
+#include <iostream>
 
 enum {
     EM_ANDAMENTO,
@@ -17,9 +18,11 @@ class Ponto
 {
     public:
         Ponto();
-        Ponto(float _x, float _y) : x(_x), y(_y) {};
+        Ponto(float _x, float _y, float _z = 0) : x(_x), y(_y), z(_z) {};
+        void print();
         GLfloat x;
         GLfloat y;
+        GLfloat z;
     protected:
     private:
 };

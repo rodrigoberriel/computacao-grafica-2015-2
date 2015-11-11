@@ -6,6 +6,11 @@ Ponto::Ponto()
 {
 }
 
+void Ponto::print()
+{
+    cout << "Ponto: " << x << ", " << y << ", " << z << endl;
+}
+
 Cor::Cor()
 {
 }
