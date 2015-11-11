@@ -7,12 +7,18 @@
 #include <math.h>
 #include <GL/glut.h>
 #include <iostream>
+#include "imageloader.h"
 
 enum {
     EM_ANDAMENTO,
     GANHOU,
     PERDEU
 };
+
+enum {
+    DRAW_2D,
+    DRAW_3D
+ };
 
 class Ponto
 {
@@ -41,6 +47,18 @@ class Cor
     private:
 };
 
+class Textura
+{
+    public:
+        Textura();
+        Textura(std::string texture_name);
+        GLuint get() { return this->t; };
+    private:
+        GLuint LoadTextureRAW(const char * filename);
+        GLuint t;
+};
+
 double calculaDistancia(Ponto p1, Ponto p2);
+
 
 #endif // ESTRUTURASBASICAS_H
