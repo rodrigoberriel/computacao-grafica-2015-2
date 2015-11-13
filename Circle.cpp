@@ -20,7 +20,7 @@ void Circle::Draw(int flag)
         glColor3f(cor.r, cor.g, cor.b);
         glBegin(GL_POLYGON);
             float angulo, x, y;
-            for (int i = 0; i < numeroDePontos; i++)   {
+            for (int i = 0; i < numeroDePontos; i++) {
                 // angulo = 2*pi*
                 angulo = 2.0f * 3.1415926f * i / float(numeroDePontos);
                 x = raio * cosf(angulo);
@@ -42,10 +42,16 @@ bool Circle::estaDentro(Ponto p)
     return (calculaDistancia(p, this->posicao) < this->raio);
 }
 
+bool Circle::estaTocando(Circle c)
+{
+    return (calculaDistancia(c.posicao, this->posicao) < (this->raio + c.raio));
+}
+
+
 OBJ* Circle::criaEsfera()
 {
 	OBJ *obj = new OBJ;
-	double space = 20;
+	double space = numeroDePontos / 10;
 	double R = this->raio;
 
 	obj->numVtx = (180 / space) * (360 / space) * 4;
@@ -120,6 +126,7 @@ OBJ* Circle::criaEsfera()
 void Circle::DrawEsfera()
 {
     OBJ* obj = criaEsfera();
+    glBindTexture (GL_TEXTURE_2D, textura.get());
 	glBegin (GL_TRIANGLE_STRIP);
 	for (int i = 0; i <obj->numVtx; i++)
 	{

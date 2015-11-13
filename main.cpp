@@ -221,7 +221,7 @@ void idle()
     if (keystates['w']) arena.jogador.moverFrente(timeDifference);
     if (keystates['s']) arena.jogador.moverTras(timeDifference);
     if (keystates['-']) arena.jogador.descer();
-    if (keystates['+'] && arena.jogador.area.posicao.z < arena.jogador.area.raio * 5) arena.jogador.subir();
+    if (keystates['+'] && arena.jogador.area.posicao.z < (arena.jogador.area.raio * 5) - ALTURA_HELICOPTERO) arena.jogador.subir();
 
     // colisao: jogador com os limites da arena, resposta: impede passagem
     Ponto jogadorNovoP = arena.jogador.getPosicao();

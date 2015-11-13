@@ -19,6 +19,7 @@ class Circle
         Textura textura;
 
         bool estaDentro(Ponto p);
+        bool estaTocando(Circle c);
         void Draw(int flag = DRAW_2D);
     protected:
     private:

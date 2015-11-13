@@ -23,7 +23,7 @@ void Arena::Draw()
     mapa.Draw(DRAW_3D);
 
     postoAbastecimento.Draw(DRAW_3D);
-    for (Circle c : objetosResgate) c.Draw();
+    for (Circle c : objetosResgate) c.Draw(DRAW_3D);
     for (Tiro t : tiros) t.Draw(DRAW_3D);
     for (Helicoptero h : inimigos) h.Draw(DRAW_3D);
     jogador.Draw(DRAW_3D);

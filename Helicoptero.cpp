@@ -183,7 +183,7 @@ double Helicoptero::getNivelCombustivel()
 void Helicoptero::reabastercer() { tempoAtualDeVoo = 0; }
 
 bool Helicoptero::resgatar(Circle objeto) {
-    if (!objeto.estaDentro(this->getPosicao())) return false;
+    if (!objeto.estaTocando(this->area)) return false;
     this->objetosResgatados++;
     return true;
 }

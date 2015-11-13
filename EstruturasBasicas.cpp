@@ -68,7 +68,7 @@ Cor::Cor(int _r, int _g, int _b)
 
 double calculaDistancia(Ponto p1, Ponto p2)
 {
-    return sqrt((p2.x - p1.x) * (p2.x - p1.x) + (p2.y - p1.y) * (p2.y - p1.y));
+    return sqrt((p2.x - p1.x) * (p2.x - p1.x) + (p2.y - p1.y) * (p2.y - p1.y) + (p2.z - p1.z) * (p2.z - p1.z));
 }
 
 Textura::Textura()
