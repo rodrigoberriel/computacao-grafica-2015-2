@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <map>
+#include <cmath>
 #include "EstruturasBasicas.h"
 #include "Rect.h"
 #include "Circle.h"
@@ -45,6 +46,7 @@ class Arena
         void MostraDados();
         void ImprimeElemento(Cor corElemento);
         void exibeResultado();
+        bool estaDentro(Tiro tiro);
     protected:
     private:
         double velTiro;

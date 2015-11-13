@@ -11,7 +11,7 @@ class Tiro
 {
     public:
         Tiro(Ponto _posicao, Ponto _direcao, std::string id_jogador, double _velocidade);
-        void Draw();
+        void Draw(int flag = DRAW_2D);
         void Mover(GLdouble timeDiff);
         bool estaDentro(int larguraMapa, int alturaMapa);
         Ponto posicao;
@@ -19,9 +19,9 @@ class Tiro
         std::string id_jogador;
         double velocidade;
         void setCor(Cor _cor);
+        int raio;
     protected:
     private:
-        int raio;
         Cor cor;
 
 };

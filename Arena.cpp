@@ -24,7 +24,7 @@ void Arena::Draw()
 
     postoAbastecimento.Draw(DRAW_3D);
     for (Circle c : objetosResgate) c.Draw();
-    for (Tiro t : tiros) t.Draw();
+    for (Tiro t : tiros) t.Draw(DRAW_3D);
     for (Helicoptero h : inimigos) h.Draw(DRAW_3D);
     jogador.Draw(DRAW_3D);
     jogador.desenharCombustivel(10, mapa.altura - 10, NUMERO_DE_MARCADORES_COMBUSTIVEL);
@@ -165,4 +165,14 @@ void Arena::desenhaOrigemDoSC()
             glutSolidCube(1.0);
         glPopMatrix();
     glPopAttrib();
+}
+
+bool Arena::estaDentro(Tiro tiro)
+{
+    Ponto p = tiro.posicao;
+    int r = tiro.raio;
+    bool dentro_x = (p.x > r && std::abs(p.x - mapa.largura) > r);
+    bool dentro_y = (p.y > r && std::abs(p.y - mapa.altura) > r);
+    bool dentro_z = (p.z > r && std::abs(p.z - (jogador.area.raio * 5)) > r);
+    return (dentro_x && dentro_y && dentro_z);
 }

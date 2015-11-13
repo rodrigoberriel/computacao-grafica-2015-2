@@ -131,7 +131,7 @@ void Helicoptero::desenharHelice()
                 glVertex2f(0.0, 0.0);
                 glVertex2f(-3.0, -40.0);
             glEnd();
-            Circle(0, 0, 3, Cor("darkgreen")).Draw();
+            Circle(Ponto(0,0), 3, Cor("darkgreen")).Draw();
         glPopMatrix();
     } else {
         double altura_helice = 1.5;
@@ -199,7 +199,7 @@ void Helicoptero::desenharResgates(float _posicaoX, float _posicaoY, int _nObjet
         for (int i = 0; i < _nObjetos; i++) {
             int x = i * ((2 * mostradorRaio) + mostradorEspaco);
             Cor cor = (i < objetosResgatados) ? Cor("green") : Cor("blue");
-            Circle(x, 0, mostradorRaio, cor).Draw();
+            Circle(Ponto(x, 0), mostradorRaio, cor).Draw();
         }
     glPopMatrix();
 }
@@ -286,8 +286,13 @@ void Helicoptero::getInfoCanhao(Ponto &pontaCanhao, Ponto &direcao)
     direcao = Ponto(direcao_x, direcao_y, direcao_z);
 
     Ponto baseCanhao = Ponto((area.raio*4/9) * cos(angulo * degree2rad), (area.raio*4/9) * sin(angulo * degree2rad));
-    Ponto pontaCanhaoInicial = Ponto(baseCanhao.x + (area.raio*2/3) * cos((anguloCanhaoYaw + angulo) * M_PI / 180.0), baseCanhao.y + (area.raio*2/3) * sin((anguloCanhaoYaw + angulo) * M_PI / 180.0));
-    pontaCanhao = Ponto(this->area.posicao.x + pontaCanhaoInicial.x, this->area.posicao.y + pontaCanhaoInicial.y, this->area.posicao.z);
+
+    Ponto pontaCanhaoInicial;
+    double tamanho = area.raio*2/3;
+    pontaCanhaoInicial.x = baseCanhao.x + tamanho * cos((anguloCanhaoYaw + angulo) * M_PI / 180.0) * sin((anguloCanhaoPitch + 90) * degree2rad);
+    pontaCanhaoInicial.y = baseCanhao.y + tamanho * sin((anguloCanhaoYaw + angulo) * M_PI / 180.0) * sin((anguloCanhaoPitch + 90) * degree2rad);
+    pontaCanhaoInicial.z = baseCanhao.y + tamanho * cos((anguloCanhaoPitch + 90) * M_PI / 180.0);
+    pontaCanhao = Ponto(this->area.posicao.x + pontaCanhaoInicial.x, this->area.posicao.y + pontaCanhaoInicial.y, this->area.posicao.z + pontaCanhaoInicial.z);
 }
 
 void Helicoptero::ajustarAngulo()

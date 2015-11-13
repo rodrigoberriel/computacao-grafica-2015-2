@@ -11,17 +11,20 @@ class Circle
 {
     public:
         Circle();
-        Circle(int _x, int _y, int _raio, Cor _cor);
+        Circle(Ponto posicao, int _raio, Cor _cor);
         Ponto posicao;
         Cor cor;
         std::string id;
         int raio;
+        Textura textura;
 
         bool estaDentro(Ponto p);
-        void Draw();
+        void Draw(int flag = DRAW_2D);
     protected:
     private:
         int numeroDePontos;
+        OBJ* criaEsfera();
+        void DrawEsfera();
 };
 
 #endif // CIRCLE_H

@@ -66,5 +66,29 @@ class Textura
 
 double calculaDistancia(Ponto p1, Ponto p2);
 
+typedef struct
+{
+	//Vertex coordinate
+	double X;
+	double Y;
+	double Z;
+
+	//Vertex normal
+	double nX;
+	double nY;
+	double nZ;
+
+	//Vertex texture coordinate
+	double U;
+	double V;
+} VERTICES;
+
+typedef struct
+{
+	VERTICES * vtx;
+	int numVtx;
+	double radius;
+} OBJ;
+
 
 #endif // ESTRUTURASBASICAS_H

@@ -181,7 +181,7 @@ void idle()
     for (unsigned int i = 0; i < arena.tiros.size(); i++) {
 
         // remove os tiros que não estão dentro da janela, senão apenas os move
-        if (arena.tiros[i].estaDentro(arena.mapa.largura, arena.mapa.altura)) arena.tiros[i].Mover(timeDifference);
+        if (arena.estaDentro(arena.tiros[i])) arena.tiros[i].Mover(timeDifference);
         else {
             arena.tiros.erase(arena.tiros.begin() + i);
             cout << "1 tiro saiu da tela! Restam " << arena.tiros.size() << " tiros na arena..." << endl;
