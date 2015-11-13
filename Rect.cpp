@@ -41,21 +41,21 @@ void Rect::Draw(int flag, bool drawStroke)
             glEnd();
         }
     } else {
+        vector<Ponto> vertices = getVertices();
         glPushMatrix();
-        glColor3f(cor.r, cor.g, cor.b);
-            glScalef(this->largura, this->altura, 1);
+            glColor3f(cor.r, cor.g, cor.b);
             glBindTexture (GL_TEXTURE_2D, this->textura.get());
             double textureS = 10; // Bigger than 1, repeat
             glBegin (GL_POLYGON);
                 glNormal3f(0,0,1);
                 glTexCoord2f (0, 0);
-                glVertex3f (0, -1, 0);
+                glVertex3f (vertices[0].x, vertices[0].y, 0);
                 glTexCoord2f (0, textureS);
-                glVertex3f (0, +1, 0);
+                glVertex3f (vertices[1].x, vertices[1].y, 0);
                 glTexCoord2f (textureS, textureS);
-                glVertex3f (+1, +1, 0);
+                glVertex3f (vertices[2].x, vertices[2].y, 0);
                 glTexCoord2f (textureS, 0);
-                glVertex3f (+1, 0, 0);
+                glVertex3f (vertices[3].x, vertices[3].y, 0);
             glEnd();
         glPopMatrix();
     }

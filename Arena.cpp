@@ -7,13 +7,21 @@ using namespace std;
 Arena::Arena()
 {
     this->statusPartida = EM_ANDAMENTO;
+    camera = CAMERA_3;
+    camYaw = 90;
+    camPitch = 135;
+    camDistanciaHelicoptero = 100;
 }
 
 void Arena::Draw()
 {
-    DrawAxes();
+    defineCamera();
+    defineLuz0();
+
+    desenhaOrigemDoSC();
     mapa.cor = Cor("lightgray");
     mapa.Draw(DRAW_3D);
+
     postoAbastecimento.Draw(DRAW_3D);
     for (Circle c : objetosResgate) c.Draw();
     for (Tiro t : tiros) t.Draw();
@@ -62,7 +70,50 @@ void Arena::ImprimeElemento(Cor corElemento)
     }
 }
 
-void DrawAxes()
+void Arena::defineCamera()
+{
+    if (camera == CAMERA_3) {
+        // inicial
+        Ponto posicaoCamera;
+        posicaoCamera.x = jogador.area.posicao.x;
+        posicaoCamera.y = jogador.area.posicao.y;
+        posicaoCamera.z = jogador.area.posicao.z;
+
+        // desloca a camera em uma 'esfera virtual'
+        Ponto direcaoCamera;
+        direcaoCamera.x = sin(camYaw * M_PI / 180.0) * sin(camPitch * M_PI / 180.0);
+        direcaoCamera.y = cos(camYaw * M_PI / 180.0) * sin(camPitch * M_PI / 180.0);
+        direcaoCamera.z = cos(camPitch * M_PI / 180.0);
+
+        posicaoCamera.x += camDistanciaHelicoptero * -direcaoCamera.x;
+        posicaoCamera.y += camDistanciaHelicoptero * -direcaoCamera.y;
+        posicaoCamera.z += camDistanciaHelicoptero * -direcaoCamera.z;
+
+        // posiciona a camera olhando para o jogador
+        gluLookAt(posicaoCamera.x,posicaoCamera.y,posicaoCamera.z, jogador.area.posicao.x,jogador.area.posicao.y,jogador.area.posicao.z, 0,0,-1);
+    }
+}
+
+void Arena::defineLuz0(bool desenha)
+{
+    // desenha cubo onde a luz estaria
+    Ponto posicao = Ponto(0.1, 0.1, 0.1);
+    GLfloat light_position[] = {posicao.x, posicao.y, posicao.z, 0.0};
+    glPushMatrix();
+        glPushAttrib(GL_ENABLE_BIT);
+            glLightfv (GL_LIGHT0, GL_POSITION, light_position);
+            if (desenha) {
+                glDisable (GL_LIGHTING);
+                glColor3f (0.0, 1.0, 1.0);
+                glTranslatef(posicao.x, posicao.y, posicao.z);
+                glScalef(5, 5, 5);
+                glutWireCube(1);
+            }
+        glPopAttrib();
+    glPopMatrix();
+}
+
+void Arena::desenhaOrigemDoSC()
 {
     GLfloat mat_ambient_r[] = { 1.0, 0.0, 0.0, 1.0 };
     GLfloat mat_ambient_g[] = { 0.0, 1.0, 0.0, 1.0 };
@@ -98,5 +149,4 @@ void DrawAxes()
             glutSolidCube(1.0);
         glPopMatrix();
     glPopAttrib();
-
 }

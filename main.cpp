@@ -23,11 +23,7 @@ bool isDrawn = false;
 bool keystates[256];
 int mouseUltimoX;
 
-//Camera controls
-double camDistanciaHelicoptero = 100;
-double camYaw = 90;
-double camPitch = 135;
-int toggleCam = 0;
+// camera controls
 int lastX = 0;
 int lastY = 0;
 int buttonDown=0;
@@ -107,7 +103,7 @@ void init()
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
 
-    // carrega as textura
+    // carrega as texturas
     arena.mapa.textura = Textura("grama.bmp");
 }
 
@@ -118,51 +114,7 @@ void display(void)
     glLoadIdentity();
 
     glScalef(1, -1, 1); // meu Y é invertido, por causa do 2D que usei como base
-
-    if (toggleCam == 0) {
-
-        // inicial
-        Ponto posicaoCamera;
-        posicaoCamera.x = arena.jogador.area.posicao.x;
-        posicaoCamera.y = arena.jogador.area.posicao.y;
-        posicaoCamera.z = arena.jogador.area.posicao.z;
-
-        // desloca a camera em uma 'esfera virtual'
-        Ponto direcaoCamera;
-        direcaoCamera.x = sin(camYaw * M_PI / 180.0) * sin(camPitch * M_PI / 180.0);
-        direcaoCamera.y = cos(camYaw * M_PI / 180.0) * sin(camPitch * M_PI / 180.0);
-        direcaoCamera.z = cos(camPitch * M_PI / 180.0);
-
-        posicaoCamera.x += camDistanciaHelicoptero * -direcaoCamera.x;
-        posicaoCamera.y += camDistanciaHelicoptero * -direcaoCamera.y;
-        posicaoCamera.z += camDistanciaHelicoptero * -direcaoCamera.z;
-
-        // posiciona a camera olhando para o jogador
-        gluLookAt(posicaoCamera.x,posicaoCamera.y,posicaoCamera.z, arena.jogador.area.posicao.x,arena.jogador.area.posicao.y,arena.jogador.area.posicao.z, 0,0,-1); // posiciona a camera
-    }
-
-    // desenha cubo onde a luz estaria
-    glPushMatrix();
-        glPushAttrib(GL_ENABLE_BIT);
-            GLfloat light_position[] = {arena.jogador.area.posicao.x, arena.jogador.area.posicao.y, arena.jogador.area.posicao.z + 30, 0.0};
-            glLightfv (GL_LIGHT0, GL_POSITION, light_position);
-            glDisable (GL_LIGHTING);
-            glColor3f (0.0, 1.0, 1.0);
-            glTranslatef(arena.jogador.area.posicao.x, arena.jogador.area.posicao.y, arena.jogador.area.posicao.z + 30);
-            glScalef(5, 5, 5);
-            glutWireCube(1);
-        glPopAttrib();
-    glPopMatrix();
-    //TODO: PAREI AQUI ===================================================================
-    // verificar a iluminação global
-    // textura também (ambient?)
-
-    // desabilita a textura e a luz para testar
-    glPushAttrib(GL_ENABLE_BIT);
-        // glDisable(GL_LIGHTING);
-        // glDisable(GL_TEXTURE_2D);
-        arena.Draw();
-    glPopAttrib();
+    arena.Draw();
 
     glutSwapBuffers();
     glutPostRedisplay();
@@ -379,13 +331,13 @@ void mouseClickMotion(int x, int y)
     // código do Thiago
     if (!buttonDown) return;
 
-    camYaw += x - lastX;
-    camPitch += y - lastY;
+    arena.camYaw += x - lastX;
+    arena.camPitch += y - lastY;
 
-    camPitch = (int)camPitch % 360;
-    if (camPitch > 179) camPitch = 179;
-    if (camPitch < 1) camPitch = 1;
-    camYaw = (int)camYaw % 360;
+    arena.camPitch = (int)arena.camPitch % 360;
+    if (arena.camPitch > 179) arena.camPitch = 179;
+    if (arena.camPitch < 1) arena.camPitch = 1;
+    arena.camYaw = (int)arena.camYaw % 360;
 
     lastX = x;
     lastY = y;
@@ -402,14 +354,14 @@ void keyboard(unsigned char key, int x, int y)
     static bool smoothEnabled = true;
 
     switch (key) {
-        case '0':
-            toggleCam = 0; // câmera que segue o helicóptero
-            break;
         case '1':
-            toggleCam = 1;
+            arena.camera = CAMERA_1;
             break;
         case '2':
-            toggleCam = 2;
+            arena.camera = CAMERA_2;
+            break;
+        case '3':
+            arena.camera = CAMERA_3; // câmera que segue o helicóptero
             break;
         case 't':
             if (textureEnabled)    glDisable(GL_TEXTURE_2D);
