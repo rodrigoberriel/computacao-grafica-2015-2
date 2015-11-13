@@ -22,6 +22,7 @@ Arena arena;
 bool isDrawn = false;
 bool keystates[256];
 int mouseUltimoX;
+int mouseUltimoY;
 
 // camera controls
 int lastX = 0;
@@ -310,9 +311,11 @@ void mouseMotion(int x, int y)
 {
     if (arena.statusPartida != EM_ANDAMENTO && arena.statusPartida != PAUSADO) return;
 
-    if (x != mouseUltimoX) arena.jogador.moverCanhao((x - mouseUltimoX)/2);
+    if (x != mouseUltimoX) arena.jogador.moverCanhao((x - mouseUltimoX)/2, 0);
+    if (y != mouseUltimoY) arena.jogador.moverCanhao(0, (y - mouseUltimoY)/2);
     // atualiza o valor do ultimo x
     mouseUltimoX = x;
+    mouseUltimoY = y;
 }
 
 void mouseClickMotion(int x, int y)

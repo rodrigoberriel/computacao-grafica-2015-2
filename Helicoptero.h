@@ -28,7 +28,7 @@ class Helicoptero
         void girarDireita(); // OK
         void girarEsquerda(); // OK
 
-        void moverCanhao(int incremento);
+        void moverCanhao(int incrementoYaw, int incrementoPitch);
         void girarHelice(); // OK
         void decolar(); // OK
         void pousar(); // OK
@@ -67,7 +67,7 @@ class Helicoptero
         void getInfoCanhao(Ponto &pontaCanhao, Ponto &direcao);
     protected:
     private:
-        float anguloCanhao, anguloHelice;
+        float anguloCanhaoYaw, anguloCanhaoPitch, anguloHelice;
         float velocidadeHelice;
         bool voando;
         bool draw3d = false;

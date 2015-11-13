@@ -6,7 +6,8 @@ Helicoptero::Helicoptero()
     area.posicao.z = ALTURA_HELICOPTERO / 2.0;
     anguloHelice = 0;
     angulo = 0;
-    anguloCanhao = 0;
+    anguloCanhaoYaw = 0;
+    anguloCanhaoPitch = 0;
     voando = false;
     velocidadeHelice = 1;
     tempoAtualDeVoo = 0;
@@ -86,14 +87,16 @@ void Helicoptero::desenharCanhao()
     if(!draw3d) {
         glPushMatrix();
             glTranslatef(20, 0, 0); // move para o topo do corpo
-            glRotatef(anguloCanhao, 0, 0, 1); // rotaciona, se quiser
+            glRotatef(anguloCanhaoYaw, 0, 0, 1); // rotaciona, se quiser
+            glRotatef(anguloCanhaoPitch, 0, 1, 0); // rotaciona, se quiser
             Rect(0, -2, 25, 4, Cor("darkgreen")).Draw(WITH_STROKE);
         glPopMatrix();
     } else {
         glPushMatrix();
             glColor3f(Cor("darkgreen").r, Cor("darkgreen").g, Cor("darkgreen").b);
             glTranslatef(20, 0, 0); // move para o topo do corpo
-            glRotatef(anguloCanhao, 0, 0, 1); // rotaciona, se quiser
+            glRotatef(anguloCanhaoYaw, 0, 0, 1); // rotaciona, se quiser
+            glRotatef(anguloCanhaoPitch, 0, 1, 0); // rotaciona, se quiser
             glScalef(25, 4, 4);
             glTranslatef(0.5, 0, 0);
             glutSolidCube(1.0);
@@ -275,9 +278,15 @@ Tiro Helicoptero::atirar()
 
 void Helicoptero::getInfoCanhao(Ponto &pontaCanhao, Ponto &direcao)
 {
-    direcao = Ponto(cos((anguloCanhao + angulo) * M_PI / 180.0), sin((anguloCanhao + angulo) * M_PI / 180.0));
-    Ponto baseCanhao = Ponto((area.raio*4/9) * cos(angulo * M_PI / 180.0), (area.raio*4/9) * sin(angulo * M_PI / 180.0));
-    Ponto pontaCanhaoInicial = Ponto(baseCanhao.x + (area.raio*2/3) * cos((anguloCanhao + angulo) * M_PI / 180.0), baseCanhao.y + (area.raio*2/3) * sin((anguloCanhao + angulo) * M_PI / 180.0));
+    double degree2rad = M_PI / 180.0;
+
+    double direcao_x = cos((anguloCanhaoYaw + angulo) * degree2rad) * sin((anguloCanhaoPitch + 90) * degree2rad);
+    double direcao_y = sin((anguloCanhaoYaw + angulo) * degree2rad) * sin((anguloCanhaoPitch + 90) * degree2rad);
+    double direcao_z = cos((anguloCanhaoPitch + 90) * degree2rad);
+    direcao = Ponto(direcao_x, direcao_y, direcao_z);
+
+    Ponto baseCanhao = Ponto((area.raio*4/9) * cos(angulo * degree2rad), (area.raio*4/9) * sin(angulo * degree2rad));
+    Ponto pontaCanhaoInicial = Ponto(baseCanhao.x + (area.raio*2/3) * cos((anguloCanhaoYaw + angulo) * M_PI / 180.0), baseCanhao.y + (area.raio*2/3) * sin((anguloCanhaoYaw + angulo) * M_PI / 180.0));
     pontaCanhao = Ponto(this->area.posicao.x + pontaCanhaoInicial.x, this->area.posicao.y + pontaCanhaoInicial.y, this->area.posicao.z);
 }
 
@@ -286,11 +295,17 @@ void Helicoptero::ajustarAngulo()
     this->angulo = (this->angulo > 360) ? (int)this->angulo % 360 : this->angulo;
 }
 
-void Helicoptero::moverCanhao(int incremento)
+void Helicoptero::moverCanhao(int incrementoYaw, int incrementoPitch)
 {
-    anguloCanhao += incremento;
-    if (anguloCanhao < -45) anguloCanhao = -45;
-    if (anguloCanhao > 45) anguloCanhao = 45;
+    // yaw
+    anguloCanhaoYaw += incrementoYaw;
+    if (anguloCanhaoYaw < -45) anguloCanhaoYaw = -45;
+    if (anguloCanhaoYaw > 45) anguloCanhaoYaw = 45;
+
+    // pitch
+    anguloCanhaoPitch += incrementoPitch;
+    if (anguloCanhaoPitch < 0) anguloCanhaoPitch = 0;
+    if (anguloCanhaoPitch > 45) anguloCanhaoPitch = 45;
 }
 
 Ponto Helicoptero::getDirecao()
