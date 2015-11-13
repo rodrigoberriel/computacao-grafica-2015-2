@@ -325,7 +325,7 @@ void mouseClickMotion(int x, int y)
     // código do Thiago
     if (!buttonDown) return;
 
-    arena.camYaw += x - lastX;
+    arena.camYaw -= x - lastX;
     arena.camPitch += y - lastY;
 
     arena.camPitch = (int)arena.camPitch % 360;
