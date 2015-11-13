@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include <time.h>
 #include "tinyxml2.h"
 
 #include "Arena.h"
