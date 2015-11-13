@@ -355,10 +355,10 @@ void keyboard(unsigned char key, int x, int y)
 
     switch (key) {
         case '1':
-            arena.camera = CAMERA_1;
+            arena.camera = CAMERA_1; // câmera no cockpit
             break;
         case '2':
-            arena.camera = CAMERA_2;
+            arena.camera = CAMERA_2; // câmera no canhão
             break;
         case '3':
             arena.camera = CAMERA_3; // câmera que segue o helicóptero

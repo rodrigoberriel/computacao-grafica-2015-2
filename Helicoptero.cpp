@@ -266,10 +266,17 @@ void Helicoptero::mirar(Ponto alvo) {
 
 Tiro Helicoptero::atirar()
 {
-    Ponto direcao = Ponto(cos((anguloCanhao + angulo) * M_PI / 180.0), sin((anguloCanhao + angulo) * M_PI / 180.0));
+    Ponto direcao, pontaCanhao;
+    getInfoCanhao(pontaCanhao, direcao);
+    return Tiro(pontaCanhao, direcao, id, this->velocidadeTiro);
+}
+
+void Helicoptero::getInfoCanhao(Ponto &pontaCanhao, Ponto &direcao)
+{
+    direcao = Ponto(cos((anguloCanhao + angulo) * M_PI / 180.0), sin((anguloCanhao + angulo) * M_PI / 180.0));
     Ponto baseCanhao = Ponto((area.raio*4/9) * cos(angulo * M_PI / 180.0), (area.raio*4/9) * sin(angulo * M_PI / 180.0));
-    Ponto pontaCanhao = Ponto(baseCanhao.x + (area.raio*2/3) * cos((anguloCanhao + angulo) * M_PI / 180.0), baseCanhao.y + (area.raio*2/3) * sin((anguloCanhao + angulo) * M_PI / 180.0));
-    return Tiro(Ponto(this->area.posicao.x + pontaCanhao.x, this->area.posicao.y + pontaCanhao.y), direcao, id, this->velocidadeTiro);
+    Ponto pontaCanhaoInicial = Ponto(baseCanhao.x + (area.raio*2/3) * cos((anguloCanhao + angulo) * M_PI / 180.0), baseCanhao.y + (area.raio*2/3) * sin((anguloCanhao + angulo) * M_PI / 180.0));
+    pontaCanhao = Ponto(this->area.posicao.x + pontaCanhaoInicial.x, this->area.posicao.y + pontaCanhaoInicial.y);
 }
 
 void Helicoptero::ajustarAngulo()

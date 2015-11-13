@@ -73,6 +73,7 @@ void Arena::ImprimeElemento(Cor corElemento)
 void Arena::defineCamera()
 {
     if (camera == CAMERA_3) {
+
         // inicial
         Ponto posicaoCamera;
         posicaoCamera.x = jogador.area.posicao.x;
@@ -91,6 +92,19 @@ void Arena::defineCamera()
 
         // posiciona a camera olhando para o jogador
         gluLookAt(posicaoCamera.x,posicaoCamera.y,posicaoCamera.z, jogador.area.posicao.x,jogador.area.posicao.y,jogador.area.posicao.z, 0,0,-1);
+
+    } else if(camera == CAMERA_2){
+
+        Ponto posicaoCamera, direcaoCamera;
+        jogador.getInfoCanhao(posicaoCamera, direcaoCamera);
+
+        // move a camera para cima do canhao
+        posicaoCamera.z += 10;
+        Ponto look = Ponto(posicaoCamera.x + direcaoCamera.x, posicaoCamera.y + direcaoCamera.y, posicaoCamera.z + direcaoCamera.z);
+
+        // posiciona a camera olhando para o jogador
+        gluLookAt(posicaoCamera.x,posicaoCamera.y,posicaoCamera.z, look.x,look.y,look.z, 0,0,-1);
+
     }
 }
 

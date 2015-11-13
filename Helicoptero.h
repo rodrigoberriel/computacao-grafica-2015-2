@@ -62,6 +62,7 @@ class Helicoptero
         Ponto getPosicao() { return area.posicao; };
         Ponto getDirecao();
         Ponto getProximaPosicao(GLdouble timeDiff);
+        void getInfoCanhao(Ponto &pontaCanhao, Ponto &direcao);
     protected:
     private:
         float anguloCanhao, anguloHelice;
