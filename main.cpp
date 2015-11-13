@@ -170,6 +170,12 @@ void idle()
     // consumir combustível e atualizar mostrador
     arena.jogador.consumirCombustivel(timeDifference);
 
+    // reabastecimento
+    if (!arena.jogador.estaVoando() && arena.postoAbastecimento.estaDentro(arena.jogador.getPosicao())) {
+        if (arena.jogador.getNivelCombustivel() != 1.0) cout << "O jogador reabasteceu! (" << (arena.jogador.getNivelCombustivel() * 100.0) << "% -> 100%)" << endl;
+        arena.jogador.reabastercer();
+    }
+
     // interação dos tiros
     for (unsigned int i = 0; i < arena.tiros.size(); i++) {
 
@@ -213,8 +219,8 @@ void idle()
     if (keystates['d']) arena.jogador.girarDireita();
     if (keystates['w']) arena.jogador.moverFrente(timeDifference);
     if (keystates['s']) arena.jogador.moverTras(timeDifference);
-    if (keystates['+']) arena.jogador.aumentarVelocidadeHelice();
-    if (keystates['-']) arena.jogador.diminuirVelocidadeHelice();
+    if (keystates['-']) arena.jogador.descer();
+    if (keystates['+'] && arena.jogador.area.posicao.z < arena.jogador.area.raio * 5) arena.jogador.subir();
 
     // colisao: jogador com os limites da arena, resposta: impede passagem
     Ponto jogadorNovoP = arena.jogador.getPosicao();
@@ -289,22 +295,7 @@ void mouse(int button, int state, int x, int y)
         }
     }
 
-    if (button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN)
-    {
-        if (arena.jogador.estaVoando()) {
-            arena.jogador.pousar();
-            // reabastece
-            if (arena.postoAbastecimento.estaDentro(arena.jogador.getPosicao())) {
-                cout << "O jogador reabasteceu! (" << (arena.jogador.getNivelCombustivel() * 100.0) << "% -> 100%)" << endl;
-                arena.jogador.reabastercer();
-            }
-        } else {
-            arena.jogador.decolar();
-            cout << "O jogador está voando!" << endl;
-        }
-    }
-
-    // código do Thiago
+    // movimenta câmera ao redor do helicóptero
     if (button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN) {
         lastX = x;
         lastY = y;

@@ -207,9 +207,11 @@ void Helicoptero::girarHelice()
     else anguloHelice = 0;
 }
 
-bool Helicoptero::estaVoando() { return voando; };
-void Helicoptero::decolar() { area.raio = area.raio * 3 / 2; voando = true; }
-void Helicoptero::pousar() { area.raio = area.raio * 2 / 3; voando = false; }
+bool Helicoptero::estaVoando() { return (area.posicao.z > ALTURA_HELICOPTERO / 2.0); };
+void Helicoptero::decolar() { voando = true; }
+void Helicoptero::pousar() { voando = false; }
+void Helicoptero::subir() { area.posicao.z++; }
+void Helicoptero::descer() { if(estaVoando()) area.posicao.z--; }
 
 void Helicoptero::girarDireita() { if (!estaVoando()) return; angulo += 1.5; }
 void Helicoptero::girarEsquerda() { if (!estaVoando()) return; angulo -= 1.5; }
@@ -276,7 +278,7 @@ void Helicoptero::getInfoCanhao(Ponto &pontaCanhao, Ponto &direcao)
     direcao = Ponto(cos((anguloCanhao + angulo) * M_PI / 180.0), sin((anguloCanhao + angulo) * M_PI / 180.0));
     Ponto baseCanhao = Ponto((area.raio*4/9) * cos(angulo * M_PI / 180.0), (area.raio*4/9) * sin(angulo * M_PI / 180.0));
     Ponto pontaCanhaoInicial = Ponto(baseCanhao.x + (area.raio*2/3) * cos((anguloCanhao + angulo) * M_PI / 180.0), baseCanhao.y + (area.raio*2/3) * sin((anguloCanhao + angulo) * M_PI / 180.0));
-    pontaCanhao = Ponto(this->area.posicao.x + pontaCanhaoInicial.x, this->area.posicao.y + pontaCanhaoInicial.y);
+    pontaCanhao = Ponto(this->area.posicao.x + pontaCanhaoInicial.x, this->area.posicao.y + pontaCanhaoInicial.y, this->area.posicao.z);
 }
 
 void Helicoptero::ajustarAngulo()

@@ -93,7 +93,7 @@ void Arena::defineCamera()
         // posiciona a camera olhando para o jogador
         gluLookAt(posicaoCamera.x,posicaoCamera.y,posicaoCamera.z, jogador.area.posicao.x,jogador.area.posicao.y,jogador.area.posicao.z, 0,0,-1);
 
-    } else if(camera == CAMERA_2){
+    } else if(camera == CAMERA_2) {
 
         Ponto posicaoCamera, direcaoCamera;
         jogador.getInfoCanhao(posicaoCamera, direcaoCamera);
@@ -104,6 +104,8 @@ void Arena::defineCamera()
 
         // posiciona a camera olhando para o jogador
         gluLookAt(posicaoCamera.x,posicaoCamera.y,posicaoCamera.z, look.x,look.y,look.z, 0,0,-1);
+
+    } else if (camera == CAMERA_1) {
 
     }
 }

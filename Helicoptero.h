@@ -32,6 +32,8 @@ class Helicoptero
         void girarHelice(); // OK
         void decolar(); // OK
         void pousar(); // OK
+        void subir(); // OK
+        void descer(); // OK
         void aumentarVelocidadeHelice(); // OK
         void diminuirVelocidadeHelice(); // OK
         void mirar(Ponto alvo);
