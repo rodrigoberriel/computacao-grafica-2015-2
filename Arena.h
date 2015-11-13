@@ -38,4 +38,6 @@ class Arena
         void mostrarMensagem();
 };
 
+void DrawAxes();
+
 #endif // ARENA_H

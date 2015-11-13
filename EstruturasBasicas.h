@@ -21,6 +21,11 @@ enum {
     DRAW_3D
  };
 
+ enum {
+    WITH_STROKE = true,
+    NO_STROKE = false
+};
+
 class Ponto
 {
     public:

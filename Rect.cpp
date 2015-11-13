@@ -17,27 +17,47 @@ Rect::Rect(int _x, int _y, int _largura, int _altura, Cor _cor)
     strokeCor = Cor(127, 127, 127);
 }
 
-void Rect::Draw(bool drawStroke)
+void Rect::Draw(int flag, bool drawStroke)
 {
-    vector<Ponto> vertices = getVertices();
+    if (flag == DRAW_2D) {
+        vector<Ponto> vertices = getVertices();
 
-    // desenha o poligono
-    if (vertices.size()  == 4)
-    {
-        glBegin(GL_POLYGON);
-            glColor3f(cor.r, cor.g, cor.b);
-            for (Ponto v : vertices) glVertex2f(v.x, v.y);
-        glEnd();
-    }
+        // desenha o poligono
+        if (vertices.size()  == 4)
+        {
+            glBegin(GL_POLYGON);
+                glColor3f(cor.r, cor.g, cor.b);
+                for (Ponto v : vertices) glVertex2f(v.x, v.y);
+            glEnd();
+        }
 
-    // desenha as arestas
-    if (drawStroke && vertices.size() == 4)
-    {
-        glPointSize(strokeLargura);
-        glBegin(GL_LINE_LOOP);
-            glColor3f(strokeCor.r, strokeCor.g, strokeCor.b);
-            for (Ponto v : vertices) glVertex2f(v.x, v.y);
-        glEnd();
+        // desenha as arestas
+        if (drawStroke && vertices.size() == 4)
+        {
+            glPointSize(strokeLargura);
+            glBegin(GL_LINE_LOOP);
+                glColor3f(strokeCor.r, strokeCor.g, strokeCor.b);
+                for (Ponto v : vertices) glVertex2f(v.x, v.y);
+            glEnd();
+        }
+    } else {
+        glPushMatrix();
+        glColor3f(cor.r, cor.g, cor.b);
+            glScalef(this->largura, this->altura, 1);
+            glBindTexture (GL_TEXTURE_2D, this->textura.get());
+            double textureS = 10; // Bigger than 1, repeat
+            glBegin (GL_POLYGON);
+                glNormal3f(0,0,1);
+                glTexCoord2f (0, 0);
+                glVertex3f (0, -1, 0);
+                glTexCoord2f (0, textureS);
+                glVertex3f (0, +1, 0);
+                glTexCoord2f (textureS, textureS);
+                glVertex3f (+1, +1, 0);
+                glTexCoord2f (textureS, 0);
+                glVertex3f (+1, 0, 0);
+            glEnd();
+        glPopMatrix();
     }
 }
 

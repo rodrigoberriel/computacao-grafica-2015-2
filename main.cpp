@@ -44,9 +44,6 @@ void idle();
 void help();
 void sair(string mensagem = "");
 
-void DrawAxes();
-
-
 int main(int argc, char** argv)
 {
     srand(time(NULL));
@@ -109,6 +106,9 @@ void init()
     glShadeModel(GL_SMOOTH);
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
+
+    // carrega as textura
+    arena.mapa.textura = Textura("grama.bmp");
 }
 
 void display(void)
@@ -141,10 +141,21 @@ void display(void)
         gluLookAt(posicaoCamera.x,posicaoCamera.y,posicaoCamera.z, arena.jogador.area.posicao.x,arena.jogador.area.posicao.y,arena.jogador.area.posicao.z, 0,0,-1); // posiciona a camera
     }
 
-    GLfloat light_position[] = { 0.0, 0.0, 0.0, 1.0 };
-    glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-
-    DrawAxes();
+    // desenha cubo onde a luz estaria
+    glPushMatrix();
+        glPushAttrib(GL_ENABLE_BIT);
+            GLfloat light_position[] = {arena.jogador.area.posicao.x, arena.jogador.area.posicao.y, arena.jogador.area.posicao.z + 30, 0.0};
+            glLightfv (GL_LIGHT0, GL_POSITION, light_position);
+            glDisable (GL_LIGHTING);
+            glColor3f (0.0, 1.0, 1.0);
+            glTranslatef(arena.jogador.area.posicao.x, arena.jogador.area.posicao.y, arena.jogador.area.posicao.z + 30);
+            glScalef(5, 5, 5);
+            glutWireCube(1);
+        glPopAttrib();
+    glPopMatrix();
+    //TODO: PAREI AQUI ===================================================================
+    // verificar a iluminação global
+    // textura também (ambient?)
 
     // desabilita a textura e a luz para testar
     glPushAttrib(GL_ENABLE_BIT);
@@ -154,6 +165,7 @@ void display(void)
     glPopAttrib();
 
     glutSwapBuffers();
+    glutPostRedisplay();
 }
 
 void reshape(int w, int h) {
@@ -167,45 +179,6 @@ void reshape(int w, int h) {
 
     // posiciona a camera
     glMatrixMode(GL_MODELVIEW);
-}
-
-void DrawAxes()
-{
-    GLfloat mat_ambient_r[] = { 1.0, 0.0, 0.0, 1.0 };
-    GLfloat mat_ambient_g[] = { 0.0, 1.0, 0.0, 1.0 };
-    GLfloat mat_ambient_b[] = { 0.0, 0.0, 1.0, 1.0 };
-
-    glPushAttrib(GL_ENABLE_BIT);
-        glDisable(GL_LIGHTING);
-        glDisable(GL_TEXTURE_2D);
-
-        //x axis
-        glPushMatrix();
-            glColor3fv(mat_ambient_r);
-            glScalef(5, 0.3, 0.3);
-            glTranslatef(0.5, 0, 0); // put in one end
-            glutSolidCube(1.0);
-        glPopMatrix();
-
-        //y axis
-        glPushMatrix();
-            glColor3fv(mat_ambient_g);
-            glRotatef(90,0,0,1);
-            glScalef(5, 0.3, 0.3);
-            glTranslatef(0.5, 0, 0); // put in one end
-            glutSolidCube(1.0);
-        glPopMatrix();
-
-        //z axis
-        glPushMatrix();
-            glColor3fv(mat_ambient_b);
-            glRotatef(-90,0,1,0);
-            glScalef(5, 0.3, 0.3);
-            glTranslatef(0.5, 0, 0); // put in one end
-            glutSolidCube(1.0);
-        glPopMatrix();
-    glPopAttrib();
-
 }
 
 void idle()
@@ -444,8 +417,8 @@ void keyboard(unsigned char key, int x, int y)
             textureEnabled = !textureEnabled;
             break;
         case 'l':
-            if (lightingEnabled)   glDisable(GL_LIGHTING);
-            else                    glEnable(GL_LIGHTING);
+            if (lightingEnabled)  { glDisable(GL_LIGHTING); cout << "Sem luz" << endl; }
+            else                  { glEnable(GL_LIGHTING); cout << "Com luz" << endl; }
             lightingEnabled = !lightingEnabled;
             break;
         case 's':

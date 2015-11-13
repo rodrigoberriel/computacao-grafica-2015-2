@@ -11,9 +11,10 @@ Arena::Arena()
 
 void Arena::Draw()
 {
+    DrawAxes();
     mapa.cor = Cor("lightgray");
-    mapa.Draw();
-    postoAbastecimento.Draw();
+    mapa.Draw(DRAW_3D);
+    postoAbastecimento.Draw(DRAW_3D);
     for (Circle c : objetosResgate) c.Draw();
     for (Tiro t : tiros) t.Draw();
     for (Helicoptero h : inimigos) h.Draw(DRAW_3D);
@@ -59,4 +60,43 @@ void Arena::ImprimeElemento(Cor corElemento)
     for (auto i : this->mapaCorID) {
         if (i.second == corElemento) cout << "Voce clicou em '" << i.first << "'!" << endl;
     }
+}
+
+void DrawAxes()
+{
+    GLfloat mat_ambient_r[] = { 1.0, 0.0, 0.0, 1.0 };
+    GLfloat mat_ambient_g[] = { 0.0, 1.0, 0.0, 1.0 };
+    GLfloat mat_ambient_b[] = { 0.0, 0.0, 1.0, 1.0 };
+
+    glPushAttrib(GL_ENABLE_BIT);
+        glDisable(GL_LIGHTING);
+        glDisable(GL_TEXTURE_2D);
+
+        //x axis
+        glPushMatrix();
+            glColor3fv(mat_ambient_r);
+            glScalef(5, 0.3, 0.3);
+            glTranslatef(0.5, 0, 0); // put in one end
+            glutSolidCube(1.0);
+        glPopMatrix();
+
+        //y axis
+        glPushMatrix();
+            glColor3fv(mat_ambient_g);
+            glRotatef(90,0,0,1);
+            glScalef(5, 0.3, 0.3);
+            glTranslatef(0.5, 0, 0); // put in one end
+            glutSolidCube(1.0);
+        glPopMatrix();
+
+        //z axis
+        glPushMatrix();
+            glColor3fv(mat_ambient_b);
+            glRotatef(-90,0,1,0);
+            glScalef(5, 0.3, 0.3);
+            glTranslatef(0.5, 0, 0); // put in one end
+            glutSolidCube(1.0);
+        glPopMatrix();
+    glPopAttrib();
+
 }

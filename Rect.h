@@ -7,11 +7,6 @@
 
 #include "EstruturasBasicas.h"
 
-enum {
-    WITH_STROKE = true,
-    NO_STROKE = false
-};
-
 class Rect
 {
     public:
@@ -24,12 +19,14 @@ class Rect
         int largura;
         int strokeLargura;
         Cor strokeCor;
+        Textura textura;
 
         bool estaDentro(Ponto p);
-        void Draw(bool drawStroke = NO_STROKE);
+        void Draw(int flag = DRAW_2D, bool drawStroke = NO_STROKE);
     protected:
     private:
         std::vector<Ponto> getVertices();
+
 
 };
 
