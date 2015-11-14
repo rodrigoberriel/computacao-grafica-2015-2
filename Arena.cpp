@@ -15,22 +15,26 @@ Arena::Arena()
 
 void Arena::Draw()
 {
-    defineCamera();
-    defineLuz0();
+    glPushMatrix();
+        defineCamera();
+        defineLuz0();
 
-    desenhaOrigemDoSC();
-    mapa.cor = Cor("lightgray");
-    mapa.Draw(DRAW_3D);
+        desenhaOrigemDoSC();
+        mapa.cor = Cor("lightgray");
+        mapa.Draw(DRAW_3D);
 
-    postoAbastecimento.Draw(DRAW_3D);
-    for (Circle c : objetosResgate) c.Draw(DRAW_3D);
-    for (Tiro t : tiros) t.Draw(DRAW_3D);
-    for (Helicoptero h : inimigos) h.Draw(DRAW_3D);
-    jogador.Draw(DRAW_3D);
-    jogador.desenharCombustivel(10, mapa.altura - 10, NUMERO_DE_MARCADORES_COMBUSTIVEL);
-    jogador.desenharResgates(mapa.largura - 10, mapa.altura - 10, nObjetos);
+        postoAbastecimento.Draw(DRAW_3D);
+        for (Circle c : objetosResgate) c.Draw(DRAW_3D);
+        for (Tiro t : tiros) t.Draw(DRAW_3D);
+        for (Helicoptero h : inimigos) h.Draw(DRAW_3D);
+        jogador.Draw(DRAW_3D);
 
-    if (statusPartida != EM_ANDAMENTO) mostrarMensagem();
+        jogador.desenharCombustivel(10, mapa.altura - 10, NUMERO_DE_MARCADORES_COMBUSTIVEL);
+        jogador.desenharResgates(mapa.largura - 10, mapa.altura - 10, nObjetos);
+
+
+        if (statusPartida != EM_ANDAMENTO) mostrarMensagem();
+    glPopMatrix();
 }
 
 void Arena::mostrarMensagem()

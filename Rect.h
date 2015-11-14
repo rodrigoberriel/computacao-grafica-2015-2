@@ -11,7 +11,7 @@ class Rect
 {
     public:
         Rect();
-        Rect(int _x, int _y, int _largura, int _altura, Cor _cor);
+        Rect(int _x, int _y, int _largura, int _altura, Cor _cor = Cor("white"));
         Ponto posicao;
         Cor cor;
         std::string id;

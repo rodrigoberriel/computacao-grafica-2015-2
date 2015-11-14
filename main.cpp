@@ -24,6 +24,9 @@ bool keystates[256];
 int mouseUltimoX;
 int mouseUltimoY;
 
+// janela
+int _w = 500, _h = 700;
+
 // camera controls
 int lastX = 0;
 int lastY = 0;
@@ -38,6 +41,7 @@ void mouse(int button, int state, int x, int y);
 void mouseMotion(int x, int y);
 void mouseClickMotion(int x, int y);
 void idle();
+void projecao(double _near, double _far, Rect viewport, double angulo = 90.0);
 void help();
 void sair(string mensagem = "");
 
@@ -114,6 +118,16 @@ void display(void)
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear all pixels both buffers
     glLoadIdentity();
 
+    // cockpit permanente
+    int cameraAtual = arena.camera;
+    arena.camera = CAMERA_1;
+    projecao(5, 1500, Rect(0,_h - 200,_w, 200));
+    glScalef(1, -1, 1); // meu Y é invertido, por causa do 2D que usei como base
+    arena.Draw();
+
+    // câmera escolhida
+    arena.camera = cameraAtual;
+    projecao(5, 1500, Rect(0,0,_w, _h - 200));
     glScalef(1, -1, 1); // meu Y é invertido, por causa do 2D que usei como base
     arena.Draw();
 
@@ -122,16 +136,21 @@ void display(void)
 }
 
 void reshape(int w, int h) {
+    _w = w;
+    _h = h;
+}
 
-    glViewport (0, 0, (GLsizei)w, (GLsizei)h);
+void projecao(double _near, double _far, Rect viewport, double angulo) {
+	glMatrixMode(GL_PROJECTION);
 
-    // configura a camera
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluPerspective (60, (float)w/(float)h, 1, 3000);
+	glLoadIdentity();
+	double _ratio = viewport.largura / viewport.altura;
+	gluPerspective(angulo, _ratio, _near, _far);
 
-    // posiciona a camera
-    glMatrixMode(GL_MODELVIEW);
+	glMatrixMode(GL_MODELVIEW);
+
+	glViewport(viewport.posicao.x, viewport.posicao.y, viewport.largura, viewport.altura);
+	glLoadIdentity();
 }
 
 void idle()
@@ -287,7 +306,7 @@ void mouse(int button, int state, int x, int y)
 {
     if (arena.statusPartida != EM_ANDAMENTO && arena.statusPartida != PAUSADO) return;
 
-    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN && arena.statusPartida != PAUSADO)
     {
         // atira
         if (arena.jogador.estaVoando()) {
@@ -356,6 +375,9 @@ void keyboard(unsigned char key, int x, int y)
             break;
         case '3':
             arena.camera = CAMERA_3; // câmera que segue o helicóptero
+            break;
+        case 'e':
+            arena.jogador.desenharEsfera();
             break;
         case 't':
             if (textureEnabled)    glDisable(GL_TEXTURE_2D);

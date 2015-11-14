@@ -52,7 +52,8 @@ class Helicoptero
         void desenharCorpo(); // OK
         void desenharCanhao(); // OK
         void Draw(int flag = DRAW_2D); // OK
-        void Draw3D(); // TESTE
+        void desenharEsfera() { desenhaEsfera = !desenhaEsfera; } // OK
+
         Circle area;
         std::string id;
         float velocidadeHelicoptero, velocidadeTiro;
@@ -71,6 +72,7 @@ class Helicoptero
         float velocidadeHelice;
         bool voando;
         bool draw3d = false;
+        bool desenhaEsfera = false;
 };
 
 #endif // HELICOPTERO_H

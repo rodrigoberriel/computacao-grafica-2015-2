@@ -19,6 +19,8 @@ void Helicoptero::Draw(int flag)
 {
     draw3d = (flag == DRAW_2D) ? false : true;
 
+    if (desenhaEsfera) area.Draw(DRAW_3D);
+
     glPushMatrix();
 
         // move ele para a posição do circulo do jogador
