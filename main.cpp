@@ -406,6 +406,9 @@ void keyboard(unsigned char key, int x, int y)
             if (arena.statusPartida == PAUSADO) arena.statusPartida = EM_ANDAMENTO;
             else arena.statusPartida = PAUSADO;
             break;
+        case 'c':
+            arena.mostrarCameraCockpit = !arena.mostrarCameraCockpit;
+            break;
     }
 }
 

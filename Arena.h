@@ -47,6 +47,7 @@ class Arena
         void ImprimeElemento(Cor corElemento);
         void exibeResultado();
         bool estaDentro(Tiro tiro);
+        bool mostrarCameraCockpit = false;
     protected:
     private:
         double velTiro;

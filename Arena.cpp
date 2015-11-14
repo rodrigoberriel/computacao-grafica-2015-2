@@ -16,7 +16,7 @@ Arena::Arena()
 void Arena::Draw()
 {
     glPushMatrix();
-        defineCamera(true);
+        defineCamera(mostrarCameraCockpit);
         defineLuz0();
 
         desenhaOrigemDoSC();
