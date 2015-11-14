@@ -16,7 +16,7 @@ Arena::Arena()
 void Arena::Draw()
 {
     glPushMatrix();
-        defineCamera();
+        defineCamera(true);
         defineLuz0();
 
         desenhaOrigemDoSC();
@@ -74,7 +74,7 @@ void Arena::ImprimeElemento(Cor corElemento)
     }
 }
 
-void Arena::defineCamera()
+void Arena::defineCamera(bool desenhaCockpit)
 {
     if (camera == CAMERA_3) {
 
@@ -111,7 +111,43 @@ void Arena::defineCamera()
 
     } else if (camera == CAMERA_1) {
 
+        Ponto posicaoCamera = jogador.getPosicao();
+        Ponto direcaoCamera = jogador.getDirecao();
+
+        // move a camera para o cockpit
+        posicaoCamera.x += direcaoCamera.x * 15;
+        posicaoCamera.y += direcaoCamera.y * 15;
+        posicaoCamera.z += direcaoCamera.z * 15 + 10;
+
+        Ponto look = Ponto(posicaoCamera.x + direcaoCamera.x, posicaoCamera.y + direcaoCamera.y, posicaoCamera.z + direcaoCamera.z);
+
+        // posiciona a camera olhando para o jogador
+        gluLookAt(posicaoCamera.x,posicaoCamera.y,posicaoCamera.z, look.x,look.y,look.z, 0,0,-1);
+
     }
+
+    if (!desenhaCockpit) return;
+
+    Ponto posicaoCamera = jogador.getPosicao();
+    Ponto direcaoCamera = jogador.getDirecao();
+
+    // move a camera para o cockpit
+    posicaoCamera.x += direcaoCamera.x * 15;
+    posicaoCamera.y += direcaoCamera.y * 15;
+    posicaoCamera.z += direcaoCamera.z * 15 + 10;
+
+    Ponto look = Ponto(posicaoCamera.x + direcaoCamera.x, posicaoCamera.y + direcaoCamera.y, posicaoCamera.z + direcaoCamera.z);
+
+    glPushMatrix();
+        glPushAttrib(GL_ENABLE_BIT);
+            glDisable (GL_LIGHTING);
+            glColor3f (0.0, 1.0, 1.0);
+            glTranslatef(look.x, look.y, look.z);
+            glRotatef(jogador.angulo, 0, 0, 1);
+            glScalef(5, 5, 5);
+            glutWireCube(1);
+        glPopAttrib();
+    glPopMatrix();
 }
 
 void Arena::defineLuz0(bool desenha)

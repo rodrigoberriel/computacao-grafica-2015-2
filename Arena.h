@@ -30,7 +30,7 @@ class Arena
         double camYaw;
         double camPitch;
         double camDistanciaHelicoptero;
-        void defineCamera();
+        void defineCamera(bool desenhaCockpit = false);
 
         void defineLuz0(bool desenha = false);
 

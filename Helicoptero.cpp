@@ -246,8 +246,14 @@ void Helicoptero::moverTras(GLdouble timeDiff)
     area.posicao.y += sin(alphaRadians) * velocidadeHelicoptero * timeDiff;
 }
 
-void Helicoptero::aumentarVelocidadeHelice() { velocidadeHelice += 0.03; }
-void Helicoptero::diminuirVelocidadeHelice() { if (velocidadeHelice >= 0.03) velocidadeHelice -= 0.03; }
+void Helicoptero::aumentarVelocidadeHelice() {
+    if (velocidadeHelice <= HELICE_VEL_MAXIMA - 0.03) velocidadeHelice += 0.03;
+    else velocidadeHelice = HELICE_VEL_MAXIMA;
+}
+void Helicoptero::diminuirVelocidadeHelice() {
+    if (velocidadeHelice >= HELICE_VEL_MINIMA + 0.03) velocidadeHelice -= 0.03;
+    else velocidadeHelice = HELICE_VEL_MINIMA;
+}
 
 void Helicoptero::mirar(Ponto alvo) {
 
@@ -266,7 +272,6 @@ void Helicoptero::mirar(Ponto alvo) {
 
     float deltaAnguloRadiano = atan2(cross, dot);
     float deltaAngulo = deltaAnguloRadiano * 180.0 / M_PI;
-    // float deltaAngulo = (alpha * 180.0 / M_PI + 0.5);
 
     angulo += deltaAngulo;
 }

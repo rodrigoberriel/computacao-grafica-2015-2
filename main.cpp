@@ -120,7 +120,7 @@ void display(void)
 
     // cockpit permanente
     int cameraAtual = arena.camera;
-    arena.camera = CAMERA_1;
+    arena.camera = CAMERA_1; // seta a camera do cockpit
     projecao(5, 1500, Rect(0,_h - 200,_w, 200));
     glScalef(1, -1, 1); // meu Y é invertido, por causa do 2D que usei como base
     arena.Draw();
@@ -166,6 +166,14 @@ void idle()
     currentTime = glutGet(GLUT_ELAPSED_TIME);
     timeDifference = currentTime - previousTime; // Elapsed time from the previous frame.
     previousTime = currentTime; //Update previous time
+
+    // modifica a velocidade da helice de acordo com o status
+    if (arena.jogador.estaVoando()) arena.jogador.aumentarVelocidadeHelice();
+    else arena.jogador.diminuirVelocidadeHelice();
+    for (unsigned int i = 0; i < arena.inimigos.size(); i++) {
+        if (arena.inimigos[i].estaVoando()) arena.inimigos[i].aumentarVelocidadeHelice();
+        else arena.inimigos[i].diminuirVelocidadeHelice();
+    }
 
     // não precisa atualizar nada, se a partida não estiver em andamento
     if (arena.statusPartida != EM_ANDAMENTO) {

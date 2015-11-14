@@ -17,6 +17,8 @@
  */
 
  #define ALTURA_HELICOPTERO 20
+ #define HELICE_VEL_MAXIMA 3.0
+ #define HELICE_VEL_MINIMA 0.0
 
 class Helicoptero
 {
