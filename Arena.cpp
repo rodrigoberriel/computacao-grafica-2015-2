@@ -29,7 +29,7 @@ void Arena::Draw()
         mapa.Draw(DRAW_3D, &texturas["chao"]);
 
         postoAbastecimento.textura = texturas["posto"];
-        Rect::DrawCubo(&postoAbastecimento, 0.1, 10);
+        Rect::DrawCubo(&postoAbastecimento, 0.2, 10);
         for (Circle c : objetosResgate) c.Draw(DRAW_3D, &texturas["objetos"]);
         for (Tiro t : tiros) t.Draw(DRAW_3D, &texturas["tiro"]);
 
@@ -90,13 +90,20 @@ void Arena::defineCamera(bool desenhaCockpit)
 
         // desloca a camera em uma 'esfera virtual'
         Ponto direcaoCamera;
-        direcaoCamera.x = sin(camYaw * M_PI / 180.0) * sin(camPitch * M_PI / 180.0);
-        direcaoCamera.y = cos(camYaw * M_PI / 180.0) * sin(camPitch * M_PI / 180.0);
         direcaoCamera.z = cos(camPitch * M_PI / 180.0);
+        posicaoCamera.z += camDistanciaHelicoptero * -direcaoCamera.z;
 
+        // limita a câmera para não passar do chão
+        if (posicaoCamera.z < ALTURA_HELICOPTERO) {
+            posicaoCamera.z = ALTURA_HELICOPTERO;
+            direcaoCamera.x = sin(camYaw * M_PI / 180.0);
+            direcaoCamera.y = cos(camYaw * M_PI / 180.0);
+        } else {
+            direcaoCamera.x = sin(camYaw * M_PI / 180.0) * sin(camPitch * M_PI / 180.0);
+            direcaoCamera.y = cos(camYaw * M_PI / 180.0) * sin(camPitch * M_PI / 180.0);
+        }
         posicaoCamera.x += camDistanciaHelicoptero * -direcaoCamera.x;
         posicaoCamera.y += camDistanciaHelicoptero * -direcaoCamera.y;
-        posicaoCamera.z += camDistanciaHelicoptero * -direcaoCamera.z;
 
         // posiciona a camera olhando para o jogador
         gluLookAt(posicaoCamera.x,posicaoCamera.y,posicaoCamera.z, jogador.area.posicao.x,jogador.area.posicao.y,jogador.area.posicao.z, 0,0,-1);
