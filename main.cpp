@@ -112,6 +112,7 @@ void init()
     arena.texturas["tiro"] = Textura("sun1.bmp");
     arena.texturas["objetos"] = Textura("earth.bmp");
     arena.texturas["posto"] = Textura("madeira.bmp");
+    arena.texturas["ceu"] = Textura("ceu.bmp");
 }
 
 void display(void)

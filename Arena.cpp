@@ -25,11 +25,9 @@ void Arena::Draw()
         for (Helicoptero h : inimigos) h.Draw(DRAW_3D);
         jogador.Draw(DRAW_3D);
 
-        mapa.cor = Cor("lightgray");
-        mapa.Draw(DRAW_3D, &texturas["chao"]);
+        DrawArena();
 
-        postoAbastecimento.textura = texturas["posto"];
-        Rect::DrawCubo(&postoAbastecimento, 0.2, 10);
+
         for (Circle c : objetosResgate) c.Draw(DRAW_3D, &texturas["objetos"]);
         for (Tiro t : tiros) t.Draw(DRAW_3D, &texturas["tiro"]);
 
@@ -38,6 +36,61 @@ void Arena::Draw()
 
 
         if (statusPartida != EM_ANDAMENTO) mostrarMensagem();
+    glPopMatrix();
+}
+
+void Arena::DrawArena()
+{
+    int alturaArena = jogador.area.raio * 5;
+    Textura *texturaParede = &texturas["posto"];
+
+    glPushMatrix();
+
+        // desenha o chão
+        mapa.posicao.z = 0;
+        mapa.cor = Cor("lightgray");
+        mapa.Draw(DRAW_3D, &texturas["chao"]);
+
+        // desenha o céu
+        glPushMatrix();
+            ceu = mapa;
+            ceu.posicao.z = -alturaArena; // sinal negativo significa inversão da Normal
+            ceu.fatorRepeticaoTextura = 1;
+            ceu.Draw(DRAW_3D, &texturas["ceu"]);
+        glPopMatrix();
+
+        // desenha as paredes
+        glPushMatrix();
+            Rect parede1 = Rect(-alturaArena, 0, alturaArena, mapa.altura);
+            glRotatef(90, 0, 1, 0);
+            parede1.Draw(DRAW_3D, texturaParede);
+        glPopMatrix();
+
+        glPushMatrix();
+            Rect parede2 = Rect(0, -alturaArena, mapa.largura, alturaArena);
+            glRotatef(-90, 1, 0, 0);
+            parede2.Draw(DRAW_3D, texturaParede);
+        glPopMatrix();
+
+        glPushMatrix();
+            Rect parede3 = Rect(0, 0, alturaArena, mapa.altura);
+            glTranslatef(mapa.largura, 0, 0);
+            glRotatef(-90, 0, 1, 0);
+            parede3.Draw(DRAW_3D, texturaParede);
+        glPopMatrix();
+
+        glPushMatrix();
+            Rect parede4 = Rect(0, 0, mapa.largura, alturaArena);
+            glTranslatef(0, mapa.altura, 0);
+            glRotatef(90, 1, 0, 0);
+            parede4.Draw(DRAW_3D, texturaParede);
+        glPopMatrix();
+
+        // desenha o posto de abastecimento
+        glPushMatrix();
+            glTranslatef(0, 0, 0.2);
+            postoAbastecimento.Draw(DRAW_3D, &texturas["posto"]);
+        glPopMatrix();
     glPopMatrix();
 }
 

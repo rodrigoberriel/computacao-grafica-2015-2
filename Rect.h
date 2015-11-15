@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <GL/glut.h>
+#include <cmath>
 
 #include "EstruturasBasicas.h"
 
@@ -20,6 +21,7 @@ class Rect
         int strokeLargura;
         Cor strokeCor;
         Textura textura;
+        int fatorRepeticaoTextura = 10;
 
         bool estaDentro(Ponto p);
         void Draw(int flag = DRAW_2D, Textura *_textura = NULL, bool drawStroke = NO_STROKE);

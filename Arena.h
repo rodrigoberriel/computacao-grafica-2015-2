@@ -20,6 +20,7 @@ class Arena
     public:
         Arena();
         Rect mapa;
+        Rect ceu;
         Rect postoAbastecimento;
         Helicoptero jogador;
         std::vector<Helicoptero> inimigos;
@@ -45,6 +46,7 @@ class Arena
         double getIntervaloEntreTiros() { return 1.0 / frequenciaTiro; };
 
         void Draw();
+        void DrawArena();
         void MostraDados();
         void ImprimeElemento(Cor corElemento);
         void exibeResultado();
