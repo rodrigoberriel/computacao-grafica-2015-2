@@ -22,7 +22,7 @@ class Rect
         Textura textura;
 
         bool estaDentro(Ponto p);
-        void Draw(int flag = DRAW_2D, bool drawStroke = NO_STROKE);
+        void Draw(int flag = DRAW_2D, Textura *_textura = NULL, bool drawStroke = NO_STROKE);
     protected:
     private:
         std::vector<Ponto> getVertices();

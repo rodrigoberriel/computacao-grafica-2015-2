@@ -149,6 +149,7 @@ void Helicoptero::desenharHelice()
                 glScalef(3, 80, altura_helice);
                 glutSolidCube(1.0);
             glPopMatrix();
+            Circle(Ponto(0,0), 2, Cor("darkgreen")).Draw(DRAW_3D);
         glPopMatrix();
     }
 }

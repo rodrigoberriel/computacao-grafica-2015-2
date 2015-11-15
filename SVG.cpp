@@ -43,6 +43,7 @@ Arena SVG::getArena(double _velTiro, double _velHelicoptero, double _tempoDeVoo,
 
     // monta a arena
     arena.mapa = mapa;
+    postoAbastecimento.posicao.z = 0.1;
     arena.postoAbastecimento = postoAbastecimento;
     arena.objetosResgate = objetosResgate;
 

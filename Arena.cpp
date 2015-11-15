@@ -18,16 +18,19 @@ void Arena::Draw()
     glPushMatrix();
         defineCamera(mostrarCameraCockpit);
         defineLuz0();
+        // defineLuz1();
 
         desenhaOrigemDoSC();
-        mapa.cor = Cor("lightgray");
-        mapa.Draw(DRAW_3D);
 
-        postoAbastecimento.Draw(DRAW_3D);
-        for (Circle c : objetosResgate) c.Draw(DRAW_3D);
-        for (Tiro t : tiros) t.Draw(DRAW_3D);
         for (Helicoptero h : inimigos) h.Draw(DRAW_3D);
         jogador.Draw(DRAW_3D);
+
+        mapa.cor = Cor("lightgray");
+        mapa.Draw(DRAW_3D, &texturas["chao"]);
+
+        postoAbastecimento.Draw(DRAW_3D);
+        for (Circle c : objetosResgate) c.Draw(DRAW_3D, &texturas["objetos"]);
+        for (Tiro t : tiros) t.Draw(DRAW_3D, &texturas["tiro"]);
 
         jogador.desenharCombustivel(10, mapa.altura - 10, NUMERO_DE_MARCADORES_COMBUSTIVEL);
         jogador.desenharResgates(mapa.largura - 10, mapa.altura - 10, nObjetos);
@@ -140,31 +143,63 @@ void Arena::defineCamera(bool desenhaCockpit)
 
     glPushMatrix();
         glPushAttrib(GL_ENABLE_BIT);
-            glDisable (GL_LIGHTING);
-            glColor3f (0.0, 1.0, 1.0);
+            glDisable(GL_LIGHTING);
+            glColor3f(0.0, 1.0, 1.0);
             glTranslatef(look.x, look.y, look.z);
             glRotatef(jogador.angulo, 0, 0, 1);
             glScalef(5, 5, 5);
             glutWireCube(1);
+            glEnable(GL_LIGHTING);
         glPopAttrib();
     glPopMatrix();
 }
 
-void Arena::defineLuz0(bool desenha)
+void Arena::defineLuz0()
 {
-    // desenha cubo onde a luz estaria
-    Ponto posicao = Ponto(0.1, 0.1, 0.1);
-    GLfloat light_position[] = {posicao.x, posicao.y, posicao.z, 0.0};
+    if (!ativaLuz0) return;
+
+    glEnable(GL_LIGHT0);
+    GLfloat light_position[] = {0,0,0,1.0};
+
     glPushMatrix();
         glPushAttrib(GL_ENABLE_BIT);
-            glLightfv (GL_LIGHT0, GL_POSITION, light_position);
-            if (desenha) {
-                glDisable (GL_LIGHTING);
-                glColor3f (0.0, 1.0, 1.0);
-                glTranslatef(posicao.x, posicao.y, posicao.z);
-                glScalef(5, 5, 5);
-                glutWireCube(1);
-            }
+
+            // move a luz para a posição desejada
+            glTranslatef(mapa.largura / 2.0, mapa.altura / 2.0, 250);
+            glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+
+            // desenha posição da luz
+            glDisable (GL_LIGHTING);
+            glColor3f (0.0, 1.0, 1.0);
+            glScalef(5, 5, 5);
+            glutWireCube(1);
+            glEnable(GL_LIGHTING);
+
+        glPopAttrib();
+    glPopMatrix();
+}
+
+void Arena::defineLuz1()
+{
+    if (!ativaLuz1) return;
+
+    glEnable(GL_LIGHT1);
+    GLfloat light_position[] = {0,0,0,1.0};
+
+    glPushMatrix();
+        glPushAttrib(GL_ENABLE_BIT);
+
+            // move a luz para a posição desejada
+            glTranslatef(jogador.area.posicao.x, jogador.area.posicao.y, jogador.area.posicao.z + 50);
+            glLightfv(GL_LIGHT1, GL_POSITION, light_position);
+
+            // desenha posição da luz
+            glDisable (GL_LIGHTING);
+            glColor3f (0.0, 1.0, 1.0);
+            glScalef(5, 5, 5);
+            glutWireCube(1);
+            glEnable(GL_LIGHTING);
+
         glPopAttrib();
     glPopMatrix();
 }

@@ -13,8 +13,10 @@ Circle::Circle(Ponto posicao, int _raio, Cor _cor)
     this->numeroDePontos = 360;
 }
 
-void Circle::Draw(int flag)
+void Circle::Draw(int flag, Textura *_textura)
 {
+    if (_textura != NULL) textura = *_textura;
+
     if (flag == DRAW_2D) {
         // calcula os pontos de acordo com a quantidade escolhida e desenha o círculo
         glColor3f(cor.r, cor.g, cor.b);
@@ -32,6 +34,7 @@ void Circle::Draw(int flag)
         glPushMatrix();
             glColor3f(cor.r, cor.g, cor.b);
             glTranslatef(posicao.x, posicao.y, posicao.z);
+            glBindTexture(GL_TEXTURE_2D, textura.get());
             DrawEsfera();
         glPopMatrix();
     }
@@ -126,13 +129,12 @@ OBJ* Circle::criaEsfera()
 void Circle::DrawEsfera()
 {
     OBJ* obj = criaEsfera();
-    glBindTexture (GL_TEXTURE_2D, textura.get());
-	glBegin (GL_TRIANGLE_STRIP);
-	for (int i = 0; i <obj->numVtx; i++)
-	{
-		glNormal3f(obj->vtx[i].nX, obj->vtx[i].nY, obj->vtx[i].nZ);
-		glTexCoord2f (obj->vtx[i].U, obj->vtx[i].V);
-		glVertex3f (obj->vtx[i].X, obj->vtx[i].Y, obj->vtx[i].Z);
-	}
-	glEnd();
+    glBegin (GL_TRIANGLE_STRIP);
+        for (int i = 0; i < obj->numVtx; i++)
+        {
+            glNormal3f(obj->vtx[i].nX, obj->vtx[i].nY, obj->vtx[i].nZ);
+            glTexCoord2f (obj->vtx[i].U, obj->vtx[i].V);
+            glVertex3f (obj->vtx[i].X, obj->vtx[i].Y, obj->vtx[i].Z);
+        }
+    glEnd();
 }

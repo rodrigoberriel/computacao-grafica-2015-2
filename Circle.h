@@ -20,7 +20,7 @@ class Circle
 
         bool estaDentro(Ponto p);
         bool estaTocando(Circle c);
-        void Draw(int flag = DRAW_2D);
+        void Draw(int flag = DRAW_2D, Textura *_textura = NULL);
     protected:
     private:
         int numeroDePontos;

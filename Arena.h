@@ -25,6 +25,7 @@ class Arena
         std::vector<Helicoptero> inimigos;
         std::vector<Circle> objetosResgate;
         std::vector<Tiro> tiros;
+        std::map<std::string, Textura> texturas;
 
         int camera;
         double camYaw;
@@ -32,7 +33,8 @@ class Arena
         double camDistanciaHelicoptero;
         void defineCamera(bool desenhaCockpit = false);
 
-        void defineLuz0(bool desenha = false);
+        void defineLuz0();
+        void defineLuz1();
 
         std::map<std::string, Cor> mapaCorID;
 
@@ -48,6 +50,8 @@ class Arena
         void exibeResultado();
         bool estaDentro(Tiro tiro);
         bool mostrarCameraCockpit = false;
+        bool ativaLuz0 = true;
+        bool ativaLuz1 = true;
     protected:
     private:
         double velTiro;

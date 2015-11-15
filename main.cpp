@@ -106,10 +106,11 @@ void init()
     glEnable(GL_TEXTURE_2D);
     glShadeModel(GL_SMOOTH);
     glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
 
     // carrega as texturas
-    arena.mapa.textura = Textura("grama.bmp");
+    arena.texturas["chao"] = Textura("grama.bmp");
+    arena.texturas["tiro"] = Textura("sun1.bmp");
+    arena.texturas["objetos"] = Textura("earth.bmp");
 }
 
 void display(void)
