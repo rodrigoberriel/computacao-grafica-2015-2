@@ -111,24 +111,25 @@ void init()
     arena.texturas["chao"] = Textura("grama.bmp");
     arena.texturas["tiro"] = Textura("sun1.bmp");
     arena.texturas["objetos"] = Textura("earth.bmp");
+    arena.texturas["posto"] = Textura("madeira.bmp");
 }
 
 void display(void)
 {
-    glClearColor (1,1,1,1.0);
+    glClearColor (0,0,0,1.0);
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear all pixels both buffers
     glLoadIdentity();
 
     // cockpit permanente
     int cameraAtual = arena.camera;
     arena.camera = CAMERA_1; // seta a camera do cockpit
-    projecao(5, 1500, Rect(0,_h - 200,_w, 200));
+    projecao(5, 1000, Rect(0,_h - 200,_w, 200));
     glScalef(1, -1, 1); // meu Y é invertido, por causa do 2D que usei como base
     arena.Draw();
 
     // câmera escolhida
     arena.camera = cameraAtual;
-    projecao(5, 1500, Rect(0,0,_w, _h - 200));
+    projecao(5, 1000, Rect(0,0,_w, _h - 200));
     glScalef(1, -1, 1); // meu Y é invertido, por causa do 2D que usei como base
     arena.Draw();
 

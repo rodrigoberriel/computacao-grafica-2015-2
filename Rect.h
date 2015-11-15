@@ -23,6 +23,7 @@ class Rect
 
         bool estaDentro(Ponto p);
         void Draw(int flag = DRAW_2D, Textura *_textura = NULL, bool drawStroke = NO_STROKE);
+        static void DrawCubo(Rect *r, float profundidade, float textureS = 1);
     protected:
     private:
         std::vector<Ponto> getVertices();

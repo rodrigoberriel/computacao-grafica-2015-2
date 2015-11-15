@@ -28,7 +28,8 @@ void Arena::Draw()
         mapa.cor = Cor("lightgray");
         mapa.Draw(DRAW_3D, &texturas["chao"]);
 
-        postoAbastecimento.Draw(DRAW_3D);
+        postoAbastecimento.textura = texturas["posto"];
+        Rect::DrawCubo(&postoAbastecimento, 0.1, 10);
         for (Circle c : objetosResgate) c.Draw(DRAW_3D, &texturas["objetos"]);
         for (Tiro t : tiros) t.Draw(DRAW_3D, &texturas["tiro"]);
 

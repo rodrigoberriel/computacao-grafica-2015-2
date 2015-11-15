@@ -80,3 +80,94 @@ bool Rect::estaDentro(Ponto p)
     bool v = (p.y >= posicao.y && p.y <= posicao.y + altura);
     return (h && v);
 }
+
+void Rect::DrawCubo(Rect *r, float profundidade, float textureS)
+{
+    Ponto _posicao = r->posicao;
+    float _altura = r->altura;
+    float _largura = r->largura;
+
+    glPushMatrix();
+        glTranslatef(0,0,_posicao.z);
+        glColor3f(r->cor.r, r->cor.g, r->cor.b);
+        glBindTexture (GL_TEXTURE_2D, r->textura.get());
+
+        glBegin(GL_POLYGON);/* f1: front */
+        glNormal3f(-1.0f,0.0f,0.0f);
+
+        glTexCoord2f (textureS, 0);
+        glVertex3f(_posicao.x,_posicao.y,0.0f);
+        glTexCoord2f (textureS, textureS);
+        glVertex3f(_posicao.x,_posicao.y,profundidade);
+        glTexCoord2f (0, textureS);
+        glVertex3f(_posicao.x + _largura,_posicao.y,profundidade);
+        glTexCoord2f (0, 0);
+        glVertex3f(_posicao.x + _largura,_posicao.y,0.0f);
+        glEnd();
+
+        glBegin(GL_POLYGON);/* f2: bottom */
+        glNormal3f(0.0f,0.0f,-1.0f);
+
+        glTexCoord2f (textureS, 0);
+        glVertex3f(_posicao.x,_posicao.y,0.0f);
+        glTexCoord2f (textureS, textureS);
+        glVertex3f(_posicao.x + _largura,_posicao.y,0.0f);
+        glTexCoord2f (0, textureS);
+        glVertex3f(_posicao.x + _largura,_posicao.y + _altura,0.0f);
+        glTexCoord2f (0, 0);
+        glVertex3f(_posicao.x,_posicao.y + _altura,0.0f);
+        glEnd();
+
+        glBegin(GL_POLYGON);/* f3:back */
+        glNormal3f(1.0f,0.0f,0.0f);
+
+        glTexCoord2f (textureS, 0);
+        glVertex3f(_posicao.x + _largura,_posicao.y + _altura,0.0f);
+        glTexCoord2f (textureS, textureS);
+        glVertex3f(_posicao.x + _largura,_posicao.y + _altura,profundidade);
+        glTexCoord2f (0, textureS);
+        glVertex3f(_posicao.x,_posicao.y + _altura,profundidade);
+        glTexCoord2f (0, 0);
+        glVertex3f(_posicao.x,_posicao.y + _altura,0.0f);
+        glEnd();
+
+        glBegin(GL_POLYGON);/* f4: top */
+        glNormal3f(0.0f,0.0f,1.0f);
+
+        glTexCoord2f (textureS, 0);
+        glVertex3f(_posicao.x + _largura,_posicao.y + _altura,profundidade);
+        glTexCoord2f (textureS, textureS);
+        glVertex3f(_posicao.x + _largura,_posicao.y,profundidade);
+        glTexCoord2f (0, textureS);
+        glVertex3f(_posicao.x,_posicao.y,profundidade);
+        glTexCoord2f (0, 0);
+        glVertex3f(_posicao.x,_posicao.y + _altura,profundidade);
+        glEnd();
+
+        glBegin(GL_POLYGON);/* f5: left */
+        glNormal3f(0.0f,1.0f,0.0f);
+
+        glTexCoord2f (0, 0);
+        glVertex3f(_posicao.x,_posicao.y,0.0f);
+        glTexCoord2f (textureS, 0);
+        glVertex3f(_posicao.x,_posicao.y + _altura,0.0f);
+        glTexCoord2f (textureS, textureS);
+        glVertex3f(_posicao.x,_posicao.y + _altura,profundidade);
+        glTexCoord2f (0, textureS);
+        glVertex3f(_posicao.x,_posicao.y,profundidade);
+        glEnd();
+
+        glBegin(GL_POLYGON);/* f6: right */
+        glNormal3f(0.0f,-1.0f,0.0f);
+
+        glTexCoord2f (textureS, 0);
+        glVertex3f(_posicao.x + _largura,_posicao.y,0.0f);
+        glTexCoord2f (textureS, textureS);
+        glVertex3f(_posicao.x + _largura,_posicao.y,profundidade);
+        glTexCoord2f (0, textureS);
+        glVertex3f(_posicao.x + _largura,_posicao.y + _altura,profundidade);
+        glTexCoord2f (0, 0);
+        glVertex3f(_posicao.x + _largura,_posicao.y + _altura,0.0f);
+        glEnd();
+    glPopMatrix();
+}
