@@ -32,3 +32,6 @@ bin/*
 obj/*
 *.depend
 *.layout
+
+# TODO
+files/todo.txt*
