@@ -396,10 +396,12 @@ void keyboard(unsigned char key, int x, int y)
             textureEnabled = !textureEnabled;
             break;
         case 'l':
-            if (lightingEnabled)  { glDisable(GL_LIGHTING); cout << "Sem luz" << endl; }
-            else                  { glEnable(GL_LIGHTING); cout << "Com luz" << endl; }
+            if (lightingEnabled)    glDisable(GL_LIGHTING);
+            else                     glEnable(GL_LIGHTING);
             lightingEnabled = !lightingEnabled;
             break;
+        case 'j': arena.ativaLuz0 = !arena.ativaLuz0; break;
+        case 'k': arena.ativaLuz1 = !arena.ativaLuz1; break;
         case 's':
             if (smoothEnabled)      glShadeModel(GL_FLAT);
             else                    glShadeModel(GL_SMOOTH);

@@ -21,7 +21,7 @@ void Arena::Draw(bool cockpitPermanente)
     glPushMatrix();
         defineCamera(mostrarCameraCockpit);
         defineLuz0();
-        // defineLuz1();
+        defineLuz1();
 
         desenhaOrigemDoSC();
 
@@ -239,10 +239,13 @@ void Arena::defineCamera(bool desenhaCockpit)
 
 void Arena::defineLuz0()
 {
-    if (!ativaLuz0) return;
+    if (!ativaLuz0) {
+        glDisable(GL_LIGHT0);
+        return;
+    }
 
     glEnable(GL_LIGHT0);
-    GLfloat light_position[] = {0,0,0,1.0};
+    GLfloat light_position[] = {0.0f,0.0f,0.0f,1.0f};
 
     glPushMatrix();
         glPushAttrib(GL_ENABLE_BIT);
@@ -264,16 +267,21 @@ void Arena::defineLuz0()
 
 void Arena::defineLuz1()
 {
-    if (!ativaLuz1) return;
+    if (!ativaLuz1) {
+        glDisable(GL_LIGHT1);
+        return;
+    }
 
     glEnable(GL_LIGHT1);
-    GLfloat light_position[] = {0,0,0,1.0};
+    GLfloat light_position[] = {0.0, 0.0, 0.0, 0.0};
+    GLfloat light_color[] = {1.0f, 1.0f, 1.0f, 1.0f}; // cor branca
 
     glPushMatrix();
         glPushAttrib(GL_ENABLE_BIT);
 
             // move a luz para a posição desejada
-            glTranslatef(jogador.area.posicao.x, jogador.area.posicao.y, jogador.area.posicao.z + 50);
+            glTranslatef(mapa.largura / 2.0, mapa.altura / 2.0, 10);
+            glLightfv(GL_LIGHT1, GL_AMBIENT, light_color);
             glLightfv(GL_LIGHT1, GL_POSITION, light_position);
 
             // desenha posição da luz
