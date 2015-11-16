@@ -45,8 +45,10 @@ class Arena
         double frequenciaTiro; // tiros por milissegundos
         double getIntervaloEntreTiros() { return 1.0 / frequenciaTiro; };
 
-        void Draw();
+        void Draw(bool cockpitPermanente = false);
         void DrawArena();
+        void DrawIndicadores();
+        void DrawOrtho(void (Arena::*funcao)());
         void MostraDados();
         void ImprimeElemento(Cor corElemento);
         void exibeResultado();

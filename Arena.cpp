@@ -13,8 +13,11 @@ Arena::Arena()
     camDistanciaHelicoptero = 100;
 }
 
-void Arena::Draw()
+void Arena::Draw(bool cockpitPermanente)
 {
+    if (statusPartida != EM_ANDAMENTO) DrawOrtho(&Arena::mostrarMensagem);
+    if (!cockpitPermanente) DrawOrtho(&Arena::DrawIndicadores);
+
     glPushMatrix();
         defineCamera(mostrarCameraCockpit);
         defineLuz0();
@@ -27,15 +30,11 @@ void Arena::Draw()
 
         DrawArena();
 
-
         for (Circle c : objetosResgate) c.Draw(DRAW_3D, &texturas["objetos"]);
         for (Tiro t : tiros) t.Draw(DRAW_3D, &texturas["tiro"]);
 
-        jogador.desenharCombustivel(10, mapa.altura - 10, NUMERO_DE_MARCADORES_COMBUSTIVEL);
-        jogador.desenharResgates(mapa.largura - 10, mapa.altura - 10, nObjetos);
 
 
-        if (statusPartida != EM_ANDAMENTO) mostrarMensagem();
     glPopMatrix();
 }
 
@@ -94,6 +93,27 @@ void Arena::DrawArena()
     glPopMatrix();
 }
 
+void Arena::DrawIndicadores()
+{
+    jogador.desenharCombustivel(10, mapa.altura - 10, NUMERO_DE_MARCADORES_COMBUSTIVEL);
+    jogador.desenharResgates(mapa.largura - 10, mapa.altura - 10, nObjetos);
+}
+
+void Arena::DrawOrtho(void (Arena::*funcao)())
+{
+    glMatrixMode (GL_PROJECTION);
+    glPushMatrix();
+        glLoadIdentity();
+        glOrtho(0, mapa.largura, mapa.altura, 0, -1, 1);
+        glPushAttrib(GL_ENABLE_BIT);
+            glDisable(GL_LIGHTING);
+            glDisable(GL_TEXTURE_2D);
+            (this->*funcao)();
+        glPopAttrib();
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
+}
+
 void Arena::mostrarMensagem()
 {
     const char * mensagem;
@@ -111,6 +131,10 @@ void Arena::mostrarMensagem()
         for (unsigned int i = 0; i < strlen(mensagem); i++) {
             glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, mensagem[i]);
         }
+    glPopMatrix();
+
+    glPushMatrix();
+        Rect(100, 100, 100, 100, _cor).Draw(WITH_STROKE);
     glPopMatrix();
 }
 

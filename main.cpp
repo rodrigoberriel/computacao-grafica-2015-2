@@ -126,7 +126,7 @@ void display(void)
     arena.camera = CAMERA_1; // seta a camera do cockpit
     projecao(5, 1000, Rect(0,_h - 200,_w, 200));
     glScalef(1, -1, 1); // meu Y é invertido, por causa do 2D que usei como base
-    arena.Draw();
+    arena.Draw(true);
 
     // câmera escolhida
     arena.camera = cameraAtual;
