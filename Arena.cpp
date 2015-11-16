@@ -33,8 +33,6 @@ void Arena::Draw(bool cockpitPermanente)
         for (Circle c : objetosResgate) c.Draw(DRAW_3D, &texturas["objetos"]);
         for (Tiro t : tiros) t.Draw(DRAW_3D, &texturas["tiro"]);
 
-
-
     glPopMatrix();
 }
 
@@ -205,7 +203,7 @@ void Arena::defineCamera(bool desenhaCockpit)
         // move a camera para o cockpit
         posicaoCamera.x += direcaoCamera.x * 15;
         posicaoCamera.y += direcaoCamera.y * 15;
-        posicaoCamera.z += direcaoCamera.z * 15 + 10;
+        posicaoCamera.z += direcaoCamera.z * 15 + 6;
 
         Ponto look = Ponto(posicaoCamera.x + direcaoCamera.x, posicaoCamera.y + direcaoCamera.y, posicaoCamera.z + direcaoCamera.z);
 
@@ -222,7 +220,7 @@ void Arena::defineCamera(bool desenhaCockpit)
     // move a camera para o cockpit
     posicaoCamera.x += direcaoCamera.x * 15;
     posicaoCamera.y += direcaoCamera.y * 15;
-    posicaoCamera.z += direcaoCamera.z * 15 + 10;
+    posicaoCamera.z += direcaoCamera.z * 15 + 6;
 
     Ponto look = Ponto(posicaoCamera.x + direcaoCamera.x, posicaoCamera.y + direcaoCamera.y, posicaoCamera.z + direcaoCamera.z);
 

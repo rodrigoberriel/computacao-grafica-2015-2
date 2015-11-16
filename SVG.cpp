@@ -55,9 +55,10 @@ Arena SVG::getArena(double _velTiro, double _velHelicoptero, double _tempoDeVoo,
     arena.jogador.corCorpo = Cor("lightgreen");
 
     srand(time(NULL));
+
     for (Circle areaInimigo : areaInimigos) {
         Helicoptero inimigo;
-        areaInimigo.posicao.z = (ALTURA_HELICOPTERO / 2.0) + rand() % (areaJogador.raio * 5);
+        areaInimigo.posicao.z = ALTURA_HELICOPTERO + (rand() % ((areaJogador.raio * 5) - ALTURA_HELICOPTERO * 2));
         inimigo.area = areaInimigo;
         inimigo.id = areaInimigo.id;
         inimigo.velocidadeHelicoptero = _velInimigo;
