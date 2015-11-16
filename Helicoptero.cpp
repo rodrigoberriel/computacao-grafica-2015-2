@@ -258,6 +258,7 @@ void Helicoptero::diminuirVelocidadeHelice() {
 
 void Helicoptero::mirar(Ponto alvo) {
 
+    // mira - yaw
     double anguloRadianos = angulo * M_PI / 180.0;
 
     // a -> direção, b -> posição, c -> alvo
@@ -275,6 +276,25 @@ void Helicoptero::mirar(Ponto alvo) {
     float deltaAngulo = deltaAnguloRadiano * 180.0 / M_PI;
 
     angulo += deltaAngulo;
+
+    // mira - pitch
+    // a2 -> direção, b -> posição, c -> alvo
+    Ponto p, d;
+    getInfoCanhao(p, d); // direção
+    Ponto a2 = Ponto(b.x + d.x, b.y + d.y, b.z + d.z);
+
+    Ponto ab2 = Ponto(b.x - a2.x, 0, b.z - a2.z);
+    Ponto cb2 = Ponto(b.x - c.x, 0, b.z - c.z);
+
+    float dot2 = (ab2.x * cb2.x + ab2.z * cb2.z); // dot product
+    float cross2 = (ab2.x * cb2.z - ab2.z * cb2.x); // cross product
+
+    float deltaAnguloRadiano2 = atan2(cross2, dot2);
+    float deltaAngulo2 = deltaAnguloRadiano2 * 180.0 / M_PI;
+
+    anguloCanhaoPitch += deltaAngulo2;
+    if (anguloCanhaoPitch < 0) anguloCanhaoPitch = 0;
+    if (anguloCanhaoPitch > 45) anguloCanhaoPitch = 45;
 }
 
 Tiro Helicoptero::atirar()
