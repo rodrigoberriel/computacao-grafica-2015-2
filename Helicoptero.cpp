@@ -15,7 +15,7 @@ Helicoptero::Helicoptero()
     corCorpo = Cor("darkred");
 }
 
-void Helicoptero::Draw(int flag)
+void Helicoptero::Draw(int flag, Textura *corpo, Textura *helice, Textura *canhao)
 {
     draw3d = (flag == DRAW_2D) ? false : true;
 
@@ -33,14 +33,14 @@ void Helicoptero::Draw(int flag)
         ajustarAngulo();
         glRotatef(angulo, 0, 0, 1);
 
-        desenharCanhao();
-        desenharCorpo();
-        desenharHelice();
+        desenharCanhao(canhao);
+        desenharCorpo(corpo);
+        desenharHelice(helice);
 
     glPopMatrix();
 }
 
-void Helicoptero::desenharCorpo()
+void Helicoptero::desenharCorpo(Textura *textura)
 {
     if (!draw3d) {
         glPushMatrix();
@@ -50,41 +50,44 @@ void Helicoptero::desenharCorpo()
             Rect(-50, -7, 15, 3, corCorpo).Draw(); // cauda esquerda
         glPopMatrix();
     } else {
-        // corpo
         glPushMatrix();
-            glColor3f(corCorpo.r, corCorpo.g, corCorpo.b);
-            glTranslatef(0, 0, 0);
-            glScalef(35, 30, ALTURA_HELICOPTERO);
-            glutSolidCube(1.0);
-        glPopMatrix();
-        // cauda
-        glPushMatrix();
-            glColor3f(corCorpo.r, corCorpo.g, corCorpo.b);
-            glTranslatef(-40, -3, 0);
-            glScalef(25, 6, 6);
-            glTranslatef(0.5, 0.5, 0);
-            glutSolidCube(1.0);
-        glPopMatrix();
-        // cauda direita
-        glPushMatrix();
-            glColor3f(corCorpo.r, corCorpo.g, corCorpo.b);
-            glTranslatef(-50, -7, 0);
-            glScalef(15,3,6);
-            glTranslatef(0.5, 0.5, 0);
-            glutSolidCube(1.0);
-        glPopMatrix();
-        // cauda esquerda
-        glPushMatrix();
-            glColor3f(corCorpo.r, corCorpo.g, corCorpo.b);
-            glTranslatef(-50, 4, 0);
-            glScalef(15,3,6);
-            glTranslatef(0.5, 0.5, 0);
-            glutSolidCube(1.0);
+            if (textura != NULL) glBindTexture (GL_TEXTURE_2D, textura->get());
+            // corpo
+            glPushMatrix();
+                glColor3f(corCorpo.r, corCorpo.g, corCorpo.b);
+                glTranslatef(0, 0, 0);
+                glScalef(35, 30, ALTURA_HELICOPTERO);
+                drawBox(1.0, 1);
+            glPopMatrix();
+            // cauda
+            glPushMatrix();
+                glColor3f(corCorpo.r, corCorpo.g, corCorpo.b);
+                glTranslatef(-40, -3, 0);
+                glScalef(25, 6, 6);
+                glTranslatef(0.5, 0.5, 0);
+                drawBox(1.0, 1);
+            glPopMatrix();
+            // cauda direita
+            glPushMatrix();
+                glColor3f(corCorpo.r, corCorpo.g, corCorpo.b);
+                glTranslatef(-50, -7, 0);
+                glScalef(15,3,6);
+                glTranslatef(0.5, 0.5, 0);
+                drawBox(1.0, 1);
+            glPopMatrix();
+            // cauda esquerda
+            glPushMatrix();
+                glColor3f(corCorpo.r, corCorpo.g, corCorpo.b);
+                glTranslatef(-50, 4, 0);
+                glScalef(15,3,6);
+                glTranslatef(0.5, 0.5, 0);
+                drawBox(1.0, 1);
+            glPopMatrix();
         glPopMatrix();
     }
 }
 
-void Helicoptero::desenharCanhao()
+void Helicoptero::desenharCanhao(Textura *textura)
 {
     if(!draw3d) {
         glPushMatrix();
@@ -96,17 +99,19 @@ void Helicoptero::desenharCanhao()
     } else {
         glPushMatrix();
             glColor3f(Cor("darkgreen").r, Cor("darkgreen").g, Cor("darkgreen").b);
+            if (textura != NULL) glBindTexture (GL_TEXTURE_2D, textura->get());
+
             glTranslatef(20, 0, 0); // move para o topo do corpo
             glRotatef(anguloCanhaoYaw, 0, 0, 1); // rotaciona, se quiser
             glRotatef(anguloCanhaoPitch, 0, 1, 0); // rotaciona, se quiser
             glScalef(25, 4, 4);
             glTranslatef(0.5, 0, 0);
-            glutSolidCube(1.0);
+            drawBox(1.0, 1);
         glPopMatrix();
     }
 }
 
-void Helicoptero::desenharHelice()
+void Helicoptero::desenharHelice(Textura *textura)
 {
     if(!draw3d) {
         glPushMatrix();
@@ -139,15 +144,16 @@ void Helicoptero::desenharHelice()
         double altura_helice = 1.5;
         glPushMatrix();
             glColor3f(79/255.0, 129/255.0, 189/255.0);
+            if (textura != NULL) glBindTexture (GL_TEXTURE_2D, textura->get());
             glRotatef(anguloHelice, 0, 0, 1);
             glTranslatef(0,0,(ALTURA_HELICOPTERO / 2.0) + altura_helice);
             glPushMatrix();
                 glScalef(80, 3, altura_helice);
-                glutSolidCube(1.0);
+                drawBox(1.0, 1);
             glPopMatrix();
             glPushMatrix();
                 glScalef(3, 80, altura_helice);
-                glutSolidCube(1.0);
+                drawBox(1.0, 1);
             glPopMatrix();
             Circle(Ponto(0,0), 2, Cor("darkgreen")).Draw(DRAW_3D);
         glPopMatrix();

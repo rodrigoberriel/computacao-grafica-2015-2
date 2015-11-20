@@ -25,8 +25,8 @@ void Arena::Draw(bool cockpitPermanente)
 
         desenhaOrigemDoSC();
 
-        for (Helicoptero h : inimigos) h.Draw(DRAW_3D);
-        jogador.Draw(DRAW_3D);
+        for (Helicoptero h : inimigos) h.Draw(DRAW_3D, &texturas["inimigoCorpo"], &texturas["inimigoHelice"], &texturas["inimigoCanhao"]);
+        jogador.Draw(DRAW_3D, &texturas["jogadorCorpo"], &texturas["jogadorHelice"], &texturas["jogadorCanhao"]);
 
         DrawArena();
 
@@ -288,7 +288,7 @@ void Arena::defineLuz1()
             glDisable (GL_LIGHTING);
             glColor3f (0.0, 1.0, 1.0);
             glScalef(5, 5, 5);
-            glutWireCube(1);
+            // glutWireCube(1);
             glEnable(GL_LIGHTING);
 
         glPopAttrib();

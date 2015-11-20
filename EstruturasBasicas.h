@@ -90,5 +90,6 @@ typedef struct
 	double radius;
 } OBJ;
 
+void drawBox(GLfloat tamanho, GLfloat textureS = 1);
 
 #endif // ESTRUTURASBASICAS_H

@@ -109,10 +109,16 @@ void init()
 
     // carrega as texturas
     arena.texturas["chao"] = Textura("grama.bmp");
-    arena.texturas["tiro"] = Textura("sun1.bmp");
+    arena.texturas["tiro"] = Textura("lava.bmp");
     arena.texturas["objetos"] = Textura("earth.bmp");
     arena.texturas["posto"] = Textura("madeira.bmp");
-    arena.texturas["ceu"] = Textura("ceu.bmp");
+    arena.texturas["ceu"] = Textura("ceu-claro.bmp");
+    arena.texturas["jogadorCorpo"] = Textura("azul.bmp");
+    arena.texturas["jogadorCanhao"] = Textura("azul.bmp");
+    arena.texturas["jogadorHelice"] = Textura("azul-claro.bmp");
+    arena.texturas["inimigoCorpo"] = Textura("vermelho.bmp");
+    arena.texturas["inimigoCanhao"] = Textura("vermelho.bmp");
+    arena.texturas["inimigoHelice"] = Textura("vermelho-claro.bmp");
 }
 
 void display(void)

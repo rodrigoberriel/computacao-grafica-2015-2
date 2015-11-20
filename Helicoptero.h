@@ -50,10 +50,10 @@ class Helicoptero
         // desenho
         void desenharCombustivel(float _posicaoX, float _posicaoY, int _numeroDeMostradores); // OK
         void desenharResgates(float _posicaoX, float _posicaoY, int _nObjetos); // OK
-        void desenharHelice(); // OK
-        void desenharCorpo(); // OK
-        void desenharCanhao(); // OK
-        void Draw(int flag = DRAW_2D); // OK
+        void desenharHelice(Textura *textura); // OK
+        void desenharCorpo(Textura *textura); // OK
+        void desenharCanhao(Textura *textura); // OK
+        void Draw(int flag = DRAW_2D, Textura *corpo = NULL, Textura *helice = NULL, Textura *canhao = NULL); // OK
         void desenharEsfera() { desenhaEsfera = !desenhaEsfera; } // OK
 
         Circle area;
@@ -63,6 +63,7 @@ class Helicoptero
         float angulo;
         int objetosResgatados;
         Cor corCorpo;
+        Textura texturaCorpo, texturaHelice, texturaCanhao;
 
         Ponto getPosicao() { return area.posicao; };
         Ponto getDirecao();
