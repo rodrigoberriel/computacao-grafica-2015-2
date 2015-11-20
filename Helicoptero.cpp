@@ -101,7 +101,7 @@ void Helicoptero::desenharCanhao(Textura *textura)
             glColor3f(Cor("darkgreen").r, Cor("darkgreen").g, Cor("darkgreen").b);
             if (textura != NULL) glBindTexture (GL_TEXTURE_2D, textura->get());
 
-            glTranslatef(20, 0, 0); // move para o topo do corpo
+            glTranslatef(16, 0, 0); // move para o topo do corpo
             glRotatef(anguloCanhaoYaw, 0, 0, 1); // rotaciona, se quiser
             glRotatef(anguloCanhaoPitch, 0, 1, 0); // rotaciona, se quiser
             glScalef(25, 4, 4);
