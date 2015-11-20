@@ -103,9 +103,9 @@ void init()
 {
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LEQUAL);
-    glEnable(GL_TEXTURE_2D);
     glShadeModel(GL_SMOOTH);
     glEnable(GL_LIGHTING);
+    glEnable(GL_TEXTURE_2D);
 
     // carrega as texturas
     arena.texturas["chao"] = Textura("grama.bmp");
@@ -127,18 +127,24 @@ void display(void)
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear all pixels both buffers
     glLoadIdentity();
 
-    // cockpit permanente
-    int cameraAtual = arena.camera;
-    arena.camera = CAMERA_1; // seta a camera do cockpit
-    projecao(5, 1000, Rect(0,_h - 200,_w, 200), 60);
-    glScalef(1, -1, 1); // meu Y é invertido, por causa do 2D que usei como base
-    arena.Draw(true);
+    if (arena.statusPartida == GANHOU || arena.statusPartida == PERDEU) {
+        glViewport(0, 0, _w, _h);
+        glLoadIdentity();
+        arena.DrawResultado();
+    } else {
+        // cockpit permanente
+        int cameraAtual = arena.camera;
+        arena.camera = CAMERA_1; // seta a camera do cockpit
+        projecao(5, 1000, Rect(0,_h - 200,_w, 200), 60);
+        glScalef(1, -1, 1); // meu Y é invertido, por causa do 2D que usei como base
+        arena.Draw(true);
 
-    // câmera escolhida
-    arena.camera = cameraAtual;
-    projecao(5, 1000, Rect(0,0,_w, _h - 200), 90);
-    glScalef(1, -1, 1); // meu Y é invertido, por causa do 2D que usei como base
-    arena.Draw();
+        // câmera escolhida
+        arena.camera = cameraAtual;
+        projecao(5, 1000, Rect(0,0,_w, _h - 200), 90);
+        glScalef(1, -1, 1); // meu Y é invertido, por causa do 2D que usei como base
+        arena.Draw();
+    }
 
     glutSwapBuffers();
     glutPostRedisplay();

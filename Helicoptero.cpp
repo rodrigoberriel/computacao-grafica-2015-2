@@ -2,7 +2,6 @@
 
 Helicoptero::Helicoptero()
 {
-    //x = y = 0;
     area.posicao.z = ALTURA_HELICOPTERO / 2.0;
     anguloHelice = 0;
     angulo = 0;
@@ -99,7 +98,8 @@ void Helicoptero::desenharCanhao(Textura *textura)
     } else {
         glPushMatrix();
             glColor3f(Cor("darkgreen").r, Cor("darkgreen").g, Cor("darkgreen").b);
-            if (textura != NULL) glBindTexture (GL_TEXTURE_2D, textura->get());
+
+            if (textura != NULL) glBindTexture(GL_TEXTURE_2D, textura->get());
 
             glTranslatef(16, 0, 0); // move para o topo do corpo
             glRotatef(anguloCanhaoYaw, 0, 0, 1); // rotaciona, se quiser

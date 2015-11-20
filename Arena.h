@@ -48,7 +48,8 @@ class Arena
         void Draw(bool cockpitPermanente = false);
         void DrawArena();
         void DrawIndicadores();
-        void DrawOrtho(void (Arena::*funcao)());
+        void DrawOrtho(void (Arena::*funcao)(), bool desabilitarTextura = true, bool desabilitarLuz = true);
+        void DrawResultado();
         void MostraDados();
         void ImprimeElemento(Cor corElemento);
         void exibeResultado();
@@ -60,7 +61,6 @@ class Arena
     private:
         double velTiro;
         double velHelicoptero;
-        void mostrarMensagem();
         void desenhaOrigemDoSC();
 };
 

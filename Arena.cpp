@@ -15,7 +15,6 @@ Arena::Arena()
 
 void Arena::Draw(bool cockpitPermanente)
 {
-    if (statusPartida != EM_ANDAMENTO) DrawOrtho(&Arena::mostrarMensagem);
     if (!cockpitPermanente) DrawOrtho(&Arena::DrawIndicadores);
 
     glPushMatrix();
@@ -31,7 +30,7 @@ void Arena::Draw(bool cockpitPermanente)
         DrawArena();
 
         for (Circle c : objetosResgate) c.Draw(DRAW_3D, &texturas["objetos"]);
-        for (Tiro t : tiros) t.Draw(DRAW_3D, &texturas["tiro"]);
+        for (Tiro t : tiros) t.Draw(DRAW_3D);
 
     glPopMatrix();
 }
@@ -97,43 +96,49 @@ void Arena::DrawIndicadores()
     jogador.desenharResgates(mapa.largura - 10, mapa.altura - 10, nObjetos);
 }
 
-void Arena::DrawOrtho(void (Arena::*funcao)())
+void Arena::DrawOrtho(void (Arena::*funcao)(), bool desabilitarTextura, bool desabilitarLuz)
 {
     glMatrixMode (GL_PROJECTION);
     glPushMatrix();
         glLoadIdentity();
         glOrtho(0, mapa.largura, mapa.altura, 0, -1, 1);
         glPushAttrib(GL_ENABLE_BIT);
-            glDisable(GL_LIGHTING);
-            glDisable(GL_TEXTURE_2D);
+            if (desabilitarLuz) glDisable(GL_LIGHTING);
+            if (desabilitarTextura) glDisable(GL_TEXTURE_2D);
             (this->*funcao)();
         glPopAttrib();
     glPopMatrix();
     glMatrixMode(GL_MODELVIEW);
 }
 
-void Arena::mostrarMensagem()
+void Arena::DrawResultado()
 {
-    const char * mensagem;
+    GLuint t;
     switch(statusPartida) {
-        case GANHOU: mensagem = "GANHOU!"; break;
-        case PERDEU: mensagem = "PERDEU!"; break;
-        case PAUSADO: mensagem = "PAUSADO!"; break;
+        case GANHOU: t = Textura("win.bmp").get(); break;
+        case PERDEU: t = Textura("lose.bmp").get(); break;
     }
 
-    Cor _cor = (statusPartida == GANHOU) ? Cor("blue") : Cor("darkred");
-
+    glMatrixMode (GL_PROJECTION);
     glPushMatrix();
-        glColor3f(_cor.r, _cor.g, _cor.b);
-        glRasterPos2f((mapa.largura/2.0) - (75.0/2.0), (mapa.altura/2.0) - (14.0 / 2.0));
-        for (unsigned int i = 0; i < strlen(mensagem); i++) {
-            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, mensagem[i]);
-        }
+        glLoadIdentity();
+        glOrtho(0, 1, 0, 1, -1, 1);
+        glPushAttrib(GL_ENABLE_BIT);
+            glDisable(GL_LIGHTING);
+            glPushMatrix();
+                glColor3f(1,1,1);
+                glBindTexture (GL_TEXTURE_2D, t);
+                glBegin (GL_POLYGON);
+                glTexCoord2f (0, 0);		glVertex3f (0, 0, 0);
+                glTexCoord2f (0, 1);		glVertex3f (0, 1 , 0);
+                glTexCoord2f (1, 1);		glVertex3f (1, 1, 0);
+                glTexCoord2f (1, 0);		glVertex3f (1, 0, 0);
+                glEnd();
+            glPopMatrix();
+            glEnable(GL_LIGHTING);
+        glPopAttrib();
     glPopMatrix();
-
-    glPushMatrix();
-        Rect(100, 100, 100, 100, _cor).Draw(WITH_STROKE);
-    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
 }
 
 void Arena::MostraDados()

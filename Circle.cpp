@@ -54,7 +54,7 @@ bool Circle::estaTocando(Circle c)
 OBJ* Circle::criaEsfera()
 {
 	OBJ *obj = new OBJ;
-	double space = numeroDePontos / 10;
+	double space = 18;
 	double R = this->raio;
 
 	obj->numVtx = (180 / space) * (360 / space) * 4;
