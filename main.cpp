@@ -445,7 +445,7 @@ void keyboard(unsigned char key, int x, int y)
 
 void help()
 {
-    cout << "Programação Gráfica - Trabalho Final" << endl;
+    cout << "Computação Gráfica - Trabalho Final" << endl;
     cout << "Aluno: Rodrigo Berriel" << endl << endl;
 }
 
