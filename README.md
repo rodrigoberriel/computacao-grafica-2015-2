@@ -1,5 +1,22 @@
 # **Trabalho Final**
 
+## Resultado
+
+[![Video de Resultado](http://i.imgur.com/NZOGiQS.png)](https://youtu.be/Hj6N9eORpkY)
+
+Os issues referenciados no histórico não estão visíveis aqui, no Github, mas você pode conferir o que cada issue trata, consultando essa lista no wiki: [issues](https://github.com/rodrigoberriel/computacao-grafica-2015-2/wiki/Issues).
+
+## How-to run
+
+Você pode encontrar um `makefile` e um arquivo para um projeto do Code::Blocks. Usando o `makefile`, basta rodar:
+
+    make
+    ./trabalhocg files/
+
+Veja no arquivo `main.cpp` quais são as teclas de atalho usadas para ativar/desativar funções do jogo.
+
+## Especificação
+
 ### Introdução
 Esse trabalho tem como objetivo fixar as técnicas de computação gráfica 3D adaptando o trabalho anterior
 para 3 coordenadas.
