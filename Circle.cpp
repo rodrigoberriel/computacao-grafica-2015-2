@@ -34,7 +34,7 @@ void Circle::Draw(int flag, Textura *_textura)
         glPushMatrix();
             glColor3f(cor.r, cor.g, cor.b);
             glTranslatef(posicao.x, posicao.y, posicao.z);
-            glBindTexture(GL_TEXTURE_2D, textura.get());
+            if (_textura != NULL) glBindTexture(GL_TEXTURE_2D, textura.get());
             DrawEsfera();
         glPopMatrix();
     }
@@ -51,9 +51,9 @@ bool Circle::estaTocando(Circle c)
 }
 
 
-OBJ* Circle::criaEsfera()
+std::unique_ptr<OBJ> Circle::criaEsfera()
 {
-	OBJ *obj = new OBJ;
+	std::unique_ptr<OBJ> obj (new OBJ);
 	double space = 18;
 	double R = this->raio;
 
@@ -128,7 +128,7 @@ OBJ* Circle::criaEsfera()
 
 void Circle::DrawEsfera()
 {
-    OBJ* obj = criaEsfera();
+    std::unique_ptr<OBJ> obj = criaEsfera();
     glBegin (GL_TRIANGLE_STRIP);
         for (int i = 0; i < obj->numVtx; i++)
         {
@@ -136,5 +136,6 @@ void Circle::DrawEsfera()
             glTexCoord2f (obj->vtx[i].U, obj->vtx[i].V);
             glVertex3f (obj->vtx[i].X, obj->vtx[i].Y, obj->vtx[i].Z);
         }
+        delete[] obj->vtx;
     glEnd();
 }

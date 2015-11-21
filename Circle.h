@@ -4,6 +4,7 @@
 
 #include <math.h>
 #include <GL/glut.h>
+#include <memory>
 
 #include "EstruturasBasicas.h"
 
@@ -24,7 +25,7 @@ class Circle
     protected:
     private:
         int numeroDePontos;
-        OBJ* criaEsfera();
+        std::unique_ptr<OBJ> criaEsfera();
         void DrawEsfera();
 };
 

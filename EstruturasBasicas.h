@@ -85,7 +85,7 @@ typedef struct
 
 typedef struct
 {
-	VERTICES * vtx;
+	VERTICES *vtx;
 	int numVtx;
 	double radius;
 } OBJ;

@@ -16,7 +16,7 @@ void Tiro::Draw(int flag, Textura *_textura)
 
     Circle t = Circle(posicao, raio, cor);
     t.textura = textura;
-    t.Draw(flag);
+    t.Draw(flag, _textura);
 }
 
 void Tiro::Mover(GLdouble timeDiff)

@@ -4,6 +4,7 @@ using namespace std;
 
 Ponto::Ponto()
 {
+    z = 0;
 }
 
 void Ponto::print()

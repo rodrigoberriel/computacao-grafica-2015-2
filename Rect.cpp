@@ -48,7 +48,7 @@ void Rect::Draw(int flag, Textura *_textura, bool drawStroke)
         double textureS = fatorRepeticaoTextura; // Bigger than 1, repeat
         glPushMatrix();
             glColor3f(cor.r, cor.g, cor.b);
-            glBindTexture (GL_TEXTURE_2D, this->textura.get());
+            if (_textura != NULL) glBindTexture (GL_TEXTURE_2D, this->textura.get());
             glBegin (GL_POLYGON);
                 glNormal3f(0,0,1);
                 glTexCoord2f (0, 0);

@@ -30,7 +30,7 @@ void Arena::Draw(bool cockpitPermanente)
         DrawArena();
 
         for (Circle c : objetosResgate) c.Draw(DRAW_3D, &texturas["objetos"]);
-        for (Tiro t : tiros) t.Draw(DRAW_3D);
+        for (Tiro t : tiros) t.Draw(DRAW_3D, &texturas["tiro"]);
 
     glPopMatrix();
 }
