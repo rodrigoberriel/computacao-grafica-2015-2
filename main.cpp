@@ -20,6 +20,7 @@ XML *config;
 SVG *svg;
 Arena arena;
 bool isDrawn = false;
+bool desativarInimigos = false;
 bool keystates[256];
 int mouseUltimoX;
 int mouseUltimoY;
@@ -274,6 +275,12 @@ void idle()
     if (jogadorNovoP.y < jogadorRaio) arena.jogador.area.posicao.y = jogadorRaio;
     if (jogadorNovoP.y > arena.mapa.altura - jogadorRaio) arena.jogador.area.posicao.y = arena.mapa.altura - jogadorRaio;
 
+    // desativa as ações dos inimigos para demonstrar algum funcionalidade
+    if (desativarInimigos) {
+        glutPostRedisplay();
+        return;
+    }
+
     // mover inimigos
     accTimeMover += timeDifference / 1000.0;
     bool mudarAngulo = false;
@@ -315,12 +322,12 @@ void idle()
             arena.inimigos[i].angulo = arena.inimigos[i].angulo + 180;
         }
 
-        arena.inimigos[i].moverFrente(timeDifference);
-
         if (atirarNoJogador) {
             arena.inimigos[i].mirar(arena.jogador.getPosicao());
             arena.tiros.push_back(arena.inimigos[i].atirar());
         }
+
+        arena.inimigos[i].moverFrente(timeDifference);
     }
 
     glutPostRedisplay();
@@ -430,6 +437,9 @@ void keyboard(unsigned char key, int x, int y)
         case 'm':
             arena.mostrarMinimapa = !arena.mostrarMinimapa;
             break;
+        case 'i':
+            desativarInimigos = !desativarInimigos;
+            break;
     }
 }
 
@@ -437,25 +447,6 @@ void help()
 {
     cout << "Programação Gráfica - Trabalho Final" << endl;
     cout << "Aluno: Rodrigo Berriel" << endl << endl;
-    cout << "Instruções:" << endl;
-    cout << " - Funcionalidades do TC3:" << endl;
-    cout << "   - Mover: [W]:Frente, [S]:Trás" << endl;
-    cout << "   - Girar: [D]:Direita, [A]:Esquerda" << endl;
-    cout << "   - Decolar e Pousar: Clique com o botão direito do mouse" << endl;
-    cout << "   - Atirar: Clique com o botão esquerdo do mouse" << endl;
-    cout << "   - Mover Canhão: mova o mouse" << endl;
-    cout << "   - Velocidade da Hélice: [+]:Aumenta, [-]:Diminui" << endl;
-    cout << " - Funcionalidades do TC4:" << endl;
-    cout << "   - Acerte um inimigo para destruí-lo" << endl;
-    cout << "   - Pouse dentro do Posto de Abastecimento para reabastecer" << endl;
-    cout << "   - Passe por cima dos objetos para resgatá-los" << endl;
-    cout << "   - Condições para a VITÓRIA:" << endl;
-    cout << "     - Destruir todos os inimigos" << endl;
-    cout << "     - Resgatar todos os objetos" << endl;
-    cout << "   - Condições para a DERROTA:" << endl;
-    cout << "     - Ser atingido por uma bala inimiga" << endl;
-    cout << "     - Ficar sem combustível" << endl;
-    cout << endl;
 }
 
 void sair(string mensagem)
