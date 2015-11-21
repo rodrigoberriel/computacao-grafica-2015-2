@@ -25,6 +25,7 @@ class Rect
 
         bool estaDentro(Ponto p);
         void Draw(int flag = DRAW_2D, Textura *_textura = NULL, bool drawStroke = NO_STROKE);
+        void DrawArestas();
         static void DrawCubo(Rect *r, float profundidade, float textureS = 1);
     protected:
     private:

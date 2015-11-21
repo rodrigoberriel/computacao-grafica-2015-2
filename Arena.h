@@ -48,6 +48,7 @@ class Arena
         void Draw(bool cockpitPermanente = false);
         void DrawArena();
         void DrawIndicadores();
+        void DrawMiniMapa(float _w, float _h);
         void DrawOrtho(void (Arena::*funcao)(), bool desabilitarTextura = true, bool desabilitarLuz = true);
         void DrawResultado();
         void MostraDados();
@@ -57,6 +58,7 @@ class Arena
         bool mostrarCameraCockpit = false;
         bool ativaLuz0 = true;
         bool ativaLuz1 = true;
+        bool mostrarMinimapa = false;
     protected:
     private:
         double velTiro;

@@ -25,7 +25,7 @@ int mouseUltimoX;
 int mouseUltimoY;
 
 // janela
-int _w = 500, _h = 700;
+int _w = 500, _h = 500;
 
 // camera controls
 int lastX = 0;
@@ -79,7 +79,7 @@ int main(int argc, char** argv)
     // glut init
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH);
-    glutInitWindowSize(arena.mapa.largura, arena.mapa.altura);
+    glutInitWindowSize(_w, _h + 200);
     glutInitWindowPosition(100, 100);
     glutCreateWindow("Computação Gráfica - Trabalho Final");
     init();
@@ -123,7 +123,7 @@ void init()
 
 void display(void)
 {
-    glClearColor (0,0,0,1.0);
+    glClearColor (1,1,1,1.0);
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear all pixels both buffers
     glLoadIdentity();
 
@@ -132,6 +132,7 @@ void display(void)
         glLoadIdentity();
         arena.DrawResultado();
     } else {
+        arena.DrawMiniMapa(_w, _h);
         // cockpit permanente
         int cameraAtual = arena.camera;
         arena.camera = CAMERA_1; // seta a camera do cockpit
@@ -425,6 +426,9 @@ void keyboard(unsigned char key, int x, int y)
             break;
         case 'c':
             arena.mostrarCameraCockpit = !arena.mostrarCameraCockpit;
+            break;
+        case 'm':
+            arena.mostrarMinimapa = !arena.mostrarMinimapa;
             break;
     }
 }

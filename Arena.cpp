@@ -35,6 +35,35 @@ void Arena::Draw(bool cockpitPermanente)
     glPopMatrix();
 }
 
+void Arena::DrawMiniMapa(float _w, float _h)
+{
+    if (!mostrarMinimapa) return;
+
+    glMatrixMode (GL_PROJECTION);
+    glPushMatrix();
+        glLoadIdentity();
+        glOrtho(0, _w, _h, 0, -1, 1);
+        glPushAttrib(GL_ENABLE_BIT);
+            glDisable(GL_LIGHTING);
+            glDisable(GL_TEXTURE_2D);
+            glTranslatef(_w - (mapa.largura * 0.25) - 5, _h  - (mapa.altura * 0.25) - 5, 0);
+            glScalef(0.25, 0.25, 1);
+            glPushMatrix();
+
+                mapa.DrawArestas();
+                postoAbastecimento.Draw(DRAW_2D);
+                for (Circle c : objetosResgate) c.Draw(DRAW_2D);
+                for (Tiro t : tiros) t.Draw(DRAW_2D);
+                for (Helicoptero h : inimigos) h.area.Draw(DRAW_2D);
+                jogador.area.Draw(DRAW_2D);
+
+            glPopMatrix();
+            glEnable(GL_LIGHTING);
+        glPopAttrib();
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
+}
+
 void Arena::DrawArena()
 {
     int alturaArena = jogador.area.raio * 5;
@@ -93,7 +122,7 @@ void Arena::DrawArena()
 void Arena::DrawIndicadores()
 {
     jogador.desenharCombustivel(10, mapa.altura - 10, NUMERO_DE_MARCADORES_COMBUSTIVEL);
-    jogador.desenharResgates(mapa.largura - 10, mapa.altura - 10, nObjetos);
+    jogador.desenharResgates(10, mapa.altura - 50, nObjetos);
 }
 
 void Arena::DrawOrtho(void (Arena::*funcao)(), bool desabilitarTextura, bool desabilitarLuz)
@@ -259,13 +288,6 @@ void Arena::defineLuz0()
             glTranslatef(mapa.largura / 2.0, mapa.altura / 2.0, 250);
             glLightfv(GL_LIGHT0, GL_POSITION, light_position);
 
-            // desenha posição da luz
-            glDisable (GL_LIGHTING);
-            glColor3f (0.0, 1.0, 1.0);
-            glScalef(5, 5, 5);
-            glutWireCube(1);
-            glEnable(GL_LIGHTING);
-
         glPopAttrib();
     glPopMatrix();
 }
@@ -288,13 +310,6 @@ void Arena::defineLuz1()
             glTranslatef(mapa.largura / 2.0, mapa.altura / 2.0, 10);
             glLightfv(GL_LIGHT1, GL_AMBIENT, light_color);
             glLightfv(GL_LIGHT1, GL_POSITION, light_position);
-
-            // desenha posição da luz
-            glDisable (GL_LIGHTING);
-            glColor3f (0.0, 1.0, 1.0);
-            glScalef(5, 5, 5);
-            // glutWireCube(1);
-            glEnable(GL_LIGHTING);
 
         glPopAttrib();
     glPopMatrix();

@@ -138,7 +138,7 @@ void drawBox(GLfloat tamanho, GLfloat textureS)
     v[1][2] = v[2][2] = v[5][2] = v[6][2] = tamanho / 2;
 
     for (i = 5; i >= 0; i--) {
-        glBegin(GL_QUADS);
+        glBegin(GL_POLYGON);
             glNormal3fv(&n[i][0]);
             glTexCoord2f (textureS, 0);
             glVertex3fv(&v[faces[i][0]][0]);

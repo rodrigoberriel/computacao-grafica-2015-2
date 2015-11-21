@@ -64,6 +64,16 @@ void Rect::Draw(int flag, Textura *_textura, bool drawStroke)
     }
 }
 
+void Rect::DrawArestas()
+{
+    vector<Ponto> vertices = getVertices();
+    glPointSize(strokeLargura);
+    glBegin(GL_LINE_LOOP);
+        Cor c = Cor("lightgray");
+        glColor3f(c.r, c.g, c.b);
+        for (Ponto v : vertices) glVertex2f(v.x, v.y);
+    glEnd();
+}
 
 vector<Ponto> Rect::getVertices()
 {
